@@ -24,7 +24,8 @@ jobs:
           fi
       - name: Compile check (atmlc smoke)
         run: |
-          python3 compiler/atmlc.py --version || python3 compiler/atmlc.py --help || true
+          python3 compiler/atmlc.py --version
+          ./atml check examples/
       - name: Build all examples
         run: |
           mkdir -p dist

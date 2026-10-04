@@ -1,4 +1,4 @@
-/* ATML runtime v1.0 — standalone engine.
+/* ATML runtime v1.4.0 — standalone engine.
  * Reads window.__ATML__ (scenes/timelines/animations/triggers/cameras),
  * drives rAF throttled per-FPS, WAAPI where possible, SVG attr tween incl.
  * path `d` lerp for morph when command counts match, fallback crossfade.

@@ -69,7 +69,7 @@ export class AtmlDebugSession extends DebugSession {
       if (compiler === 'atml') {
         const { execFileSync } = await import('node:child_process');
         try {
-          execFileSync(compiler, ['--help'], { stdio: 'ignore' });
+          execFileSync(compiler, ['--version'], { stdio: 'ignore' });
         } catch {
           this.sendEvent(new OutputEvent(
             'ATML: compiler not found. Install it (python3 installer/cli_install.py --yes) ' +

@@ -28,7 +28,7 @@ Language support for **ATML (Animation Text Markup Language)** `.atml` files.
 ### From `.vsix`
 
 ```sh
-code --install-extension atml-1.3.2.vsix
+code --install-extension atml-1.4.0.vsix
 ```
 
 ### From source

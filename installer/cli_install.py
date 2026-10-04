@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ATML 1.3.2 headless installer — twin of gui_installer.py for scripts/CI.
+"""ATML 1.4.0 headless installer — twin of gui_installer.py for scripts/CI.
 
 Examples:
     python3 installer/cli_install.py --list-editors

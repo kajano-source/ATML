@@ -1,4 +1,4 @@
-"""ATML compiler v1.0 -- Python stdlib only."""
+"""ATML compiler v1.4.0 -- Python stdlib only."""
 import argparse
 import html as htmlmod
 import json
@@ -7,7 +7,7 @@ import re
 import sys
 from html.parser import HTMLParser
 
-VERSION = "1.0"
+VERSION = "1.4.0"
 ATML_TAGS = {"atml", "stage", "scene", "actor", "animate", "timeline", "clip",
              "transition", "trigger", "camera", "loop", "key", "tween", "draw",
              "pixel", "part"}
@@ -1036,7 +1036,7 @@ def compile_file(path, out=None, fps=None, title=None, minify=False):
     return html
 
 
-SCAFFOLD = """<atml version="1.0" fps="60" width="800" height="600" title="%(name)s">
+SCAFFOLD = """<atml version="1.4.0" fps="60" width="800" height="600" title="%(name)s">
 <stage id="main" width="800" height="600" fps="60" background="#111827">
   <scene id="intro" dur="4s">
     <actor id="box" x="100" y="100" w="120" h="120" shape="rect" fill="#4da3ff">
@@ -1063,16 +1063,38 @@ def cmd_new(name):
     return 0
 
 
-def cmd_check(path):
-    with open(path, "r", encoding="utf-8") as f:
-        src = f.read()
-    try:
-        compile_atml(src, filename=path)
-    except ValueError as e:
-        print(str(e), file=sys.stderr)
+def cmd_check(paths):
+    if isinstance(paths, str):
+        paths = [paths]
+    files = []
+    for p in paths:
+        if os.path.isdir(p):
+            for root, _dirs, fns in os.walk(p):
+                for fn in sorted(fns):
+                    if fn.endswith(".atml"):
+                        files.append(os.path.join(root, fn))
+        else:
+            files.append(p)
+    if not files:
+        print("atml check: no .atml files found", file=sys.stderr)
         return 1
-    print("%s: OK" % path)
-    return 0
+    rc = 0
+    for path in files:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                src = f.read()
+        except OSError as e:
+            print("%s: error: %s" % (path, e), file=sys.stderr)
+            rc = 1
+            continue
+        try:
+            compile_atml(src, filename=path)
+        except ValueError as e:
+            print(str(e), file=sys.stderr)
+            rc = 1
+            continue
+        print("%s: OK" % path)
+    return rc
 
 
 def cmd_build(args):
@@ -1255,7 +1277,10 @@ def cmd_run(args):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="atmlc", description="ATML compiler v1.0")
+    ap = argparse.ArgumentParser(prog="atmlc",
+                                 description="ATML compiler v%s" % VERSION)
+    ap.add_argument("--version", action="version",
+                    version="atmlc %s" % VERSION)
     sub = ap.add_subparsers(dest="cmd")
     b = sub.add_parser("build", help="compile .atml to .html")
     b.add_argument("input", help="input .atml file")
@@ -1263,8 +1288,9 @@ def main(argv=None):
     b.add_argument("--minify", action="store_true")
     b.add_argument("--fps", type=float, default=None)
     b.add_argument("--title", default=None)
-    c = sub.add_parser("check", help="validate .atml")
-    c.add_argument("input")
+    c = sub.add_parser("check", help="validate .atml file(s) or directory")
+    c.add_argument("input", nargs="+",
+                   help="one or more .atml files, or a directory")
     n = sub.add_parser("new", help="scaffold a new .atml file")
     n.add_argument("name")
     s = sub.add_parser("serve", help="serve compiled .atml locally")

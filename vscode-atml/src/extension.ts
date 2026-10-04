@@ -25,15 +25,16 @@ const ATML_ATTRS = [
 ];
 
 const ATML_SUGAR_ATTRS = [
-  'a-fade', 'a-slide', 'a-bounce', 'a-spin', 'a-float', 'a-morph'
+  'a-fade', 'a-slide', 'a-bounce', 'a-spin', 'a-float', 'a-wiggle',
+  'a-morph', 'a-draw'
 ];
 
 const EASINGS = [
   'linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out',
-  'bounce', 'elastic', 'spring', 'smooth', 'step'
+  'bounce', 'elastic', 'spring'
 ];
 
-const SHAPES = ['rect', 'circle', 'path', 'text', 'ellipse', 'line', 'polygon'];
+const SHAPES = ['rect', 'circle', 'ellipse', 'line', 'poly', 'path', 'text', 'image', 'sprite', 'group'];
 
 const TAG_DOCS: Record<string, string> = {
   atml: 'Root ATML document. Attributes: `fps` (default frame rate).',

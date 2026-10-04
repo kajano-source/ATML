@@ -1,5 +1,5 @@
 Name:           atml
-Version:        1.3.2
+Version:        1.4.0
 Release:        1%{?dist}
 Summary:        ATML template compiler CLI, HTML converter runtime, and editor support
 License:        MIT
@@ -9,7 +9,7 @@ Requires:       python3
 Recommends:     python3-tkinter
 
 %description
-ATML 1.3.2: compiler CLI (`atml`), HTML converter runtime, example
+ATML 1.4.0: compiler CLI (`atml`), HTML converter runtime, example
 projects, VS Code syntax support, and .atml file association.
 
 %install
@@ -25,7 +25,7 @@ cat > %{buildroot}%{_bindir}/atml <<'EOF'
 if [ -f %{_datadir}/atml/compiler/atmlc.py ]; then
   exec python3 %{_datadir}/atml/compiler/atmlc.py "$@"
 else
-  echo "ATML 1.3.2 (%{_datadir}/atml)" >&2
+  echo "ATML 1.4.0 (%{_datadir}/atml)" >&2
   ls %{_datadir}/atml >&2
 fi
 EOF
@@ -38,6 +38,8 @@ install -Dm644 %{_sourcedir}/installer/arch/atml.desktop %{buildroot}%{_datadir}
 %{_datadir}/applications/atml.desktop
 
 %changelog
+* Sun Oct 05 2026 ATML contributors - 1.4.0-1
+- 1.4.0: `atml --version`, `check` accepts dirs/multiple files; extension sugar/shapes synced.
 * Sat Oct 04 2026 ATML contributors - 1.3.2-1
 - 1.3.2: drop WAAPI fast-path (phantom actor offsets); text actors keep font-size/weight/family.
 - 1.3.1: extension finds user-install compiler without PATH; visible run notifications.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 — 2026-10-05
+
+- New: `atml --version` prints the compiler version; `atml check` accepts
+  multiple files and directories (`./atml check examples/`).
+- Fix: extension completions synced with the compiler (`a-draw`, `a-wiggle`,
+  `image`/`sprite`/`group` shapes, easing list).
+- Fix: single `VERSION` source (`1.4.0`) across compiler, runtime, and packaging.
+
 ## 1.3.2 — 2026-10-04
 
 - Fix: removed the WAAPI fast-path — its malformed `translate` values stacked

@@ -4,7 +4,7 @@ import os
 import re
 import unittest
 
-from compiler.atmlc import compile_atml
+from compiler.atmlc import VERSION, compile_atml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EXAMPLES = os.path.join(HERE, "..", "examples")
@@ -21,7 +21,7 @@ class TestCompiler(unittest.TestCase):
         src = "<!DOCTYPE html><html><head><title>T</title></head><body><p>Hi</p></body></html>"
         out = compile_atml(src, filename="t.atml")
         self.assertIn("<p>Hi</p>", out)
-        self.assertIn("compiled with ATML v1.0", out)
+        self.assertIn("compiled with ATML v%s" % VERSION, out)
 
     def test_actor_svg_emit(self):
         src = ('<atml><stage id="s"><scene id="c">'
@@ -106,7 +106,7 @@ class TestCompiler(unittest.TestCase):
             with open(path, encoding="utf-8") as f:
                 src = f.read()
             out = compile_atml(src, filename=name)
-            self.assertIn("compiled with ATML v1.0", out, name)
+            self.assertIn("compiled with ATML v%s" % VERSION, out, name)
             self.assertIn("window.__ATML__", out, name)
 
     def test_build_creates_missing_out_dirs(self):
@@ -221,6 +221,23 @@ class TestCompiler(unittest.TestCase):
             body = f.read()
         self.assertNotIn("canUseWaapi", body)
         self.assertNotIn("el.animate(", body)
+
+    def test_version_flag(self):
+        from compiler.atmlc import VERSION as V
+        import io
+        from contextlib import redirect_stdout
+        from compiler.atmlc import main as atml_main
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            with self.assertRaises(SystemExit) as ctx:
+                atml_main(["--version"])
+        self.assertEqual(ctx.exception.code, 0)
+        self.assertIn(V, buf.getvalue())
+
+    def test_check_accepts_directory(self):
+        from compiler.atmlc import main as atml_main
+        rc = atml_main(["check", EXAMPLES])
+        self.assertEqual(rc, 0)
 
 
 if __name__ == "__main__":

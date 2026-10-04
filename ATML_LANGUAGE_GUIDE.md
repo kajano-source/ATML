@@ -2161,6 +2161,12 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.4.0 — 2026-10-05
+
+- CLI: `atml --version`; `atml check` accepts multiple files and directories.
+- Extension: sugar (`a-draw`, `a-wiggle`), shapes (`image`/`sprite`/`group`),
+  and easings synced with the compiler.
+
 ## 1.3.2 — 2026-10-04
 
 - Engine: dropped WAAPI fast-path (phantom actor offsets); text actors keep

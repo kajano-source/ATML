@@ -22,7 +22,8 @@ jobs:
 
       - name: Compile check
         run: |
-          python3 compiler/atmlc.py --version || true
+          python3 compiler/atmlc.py --version
+          python3 -m unittest discover -s tests
           mkdir -p dist
           for f in examples/*.atml; do
             [ -e "$f" ] || continue
