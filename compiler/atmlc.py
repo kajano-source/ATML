@@ -1077,6 +1077,9 @@ def cmd_build(args):
         html = re.sub(r">\s+<", "><", html)
         html = re.sub(r"\n\s*", "\n", html)
     out = args.o or (os.path.splitext(args.input)[0] + ".html")
+    parent = os.path.dirname(os.path.abspath(out))
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
     print("compiled %s -> %s" % (args.input, out))

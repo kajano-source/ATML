@@ -2149,6 +2149,11 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.1.1 — 2026-10-04
+
+- Fix: `build -o` creates missing output directories (`dist/` no longer needs
+  to exist first).
+
 ## 1.1.0 — 2026-10-04
 
 - `publish` is now implemented in the compiler (previously spec-only): multi-page

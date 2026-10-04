@@ -2,7 +2,7 @@
   "name": "atml",
   "displayName": "ATML",
   "description": "Language support for ATML (Animation Text Markup Language) — syntax highlighting, snippets, build, preview, hover docs and completions.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "atml-lang",
   "license": "MIT",
   "icon": "./icons/atml.svg",

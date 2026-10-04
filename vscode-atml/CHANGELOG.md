@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 — 2026-10-04
+
+- Fix: `atml build -o dist/...` now creates missing output directories instead of
+  crashing with `FileNotFoundError`.
+
 ## 1.1.0 — 2026-10-04
 
 - New command `atml.publish`: publish the active `.atml` file to `dist/` (index.html + assets).

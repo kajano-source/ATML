@@ -109,6 +109,22 @@ class TestCompiler(unittest.TestCase):
             self.assertIn("compiled with ATML v1.0", out, name)
             self.assertIn("window.__ATML__", out, name)
 
+    def test_build_creates_missing_out_dirs(self):
+        import shutil
+        import tempfile
+        from compiler.atmlc import main as atml_main
+        tmp = tempfile.mkdtemp(prefix="atml-build-")
+        try:
+            src = os.path.join(tmp, "a.atml")
+            with open(src, "w", encoding="utf-8") as f:
+                f.write("<!DOCTYPE html><html><body><p>Hi</p></body></html>")
+            nested = os.path.join(tmp, "dist", "sub", "a.html")
+            rc = atml_main(["build", src, "-o", nested])
+            self.assertEqual(rc, 0)
+            self.assertTrue(os.path.isfile(nested))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_publish_single_page(self):
         import shutil
         import tempfile

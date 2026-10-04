@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# ATML 1.1.0 installer for Linux (Arch / Debian / Fedora + generic).
+# ATML 1.1.1 installer for Linux (Arch / Debian / Fedora + generic).
 # Usage:
 #   bash scripts/install.sh [--yes] [--only compiler,runtime,examples,vscode,fileassoc]
 #   PREFIX=~/.local bash scripts/install.sh
 set -euo pipefail
 
-ATML_VERSION="1.1.0"
+ATML_VERSION="1.1.1"
 PREFIX="${PREFIX:-$HOME/.local}"
 SHARE="$PREFIX/share/atml"
 BINDIR="$PREFIX/bin"

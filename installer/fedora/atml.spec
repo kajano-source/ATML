@@ -1,5 +1,5 @@
 Name:           atml
-Version:        1.1.0
+Version:        1.1.1
 Release:        1%{?dist}
 Summary:        ATML template compiler CLI, HTML converter runtime, and editor support
 License:        MIT
@@ -9,7 +9,7 @@ Requires:       python3
 Recommends:     python3-tkinter
 
 %description
-ATML 1.1.0: compiler CLI (`atml`), HTML converter runtime, example
+ATML 1.1.1: compiler CLI (`atml`), HTML converter runtime, example
 projects, VS Code syntax support, and .atml file association.
 
 %install
@@ -25,7 +25,7 @@ cat > %{buildroot}%{_bindir}/atml <<'EOF'
 if [ -f %{_datadir}/atml/compiler/atml.py ]; then
   exec python3 %{_datadir}/atml/compiler/atml.py "$@"
 else
-  echo "ATML 1.1.0 (%{_datadir}/atml)" >&2
+  echo "ATML 1.1.1 (%{_datadir}/atml)" >&2
   ls %{_datadir}/atml >&2
 fi
 EOF
@@ -38,5 +38,6 @@ install -Dm644 %{_sourcedir}/installer/arch/atml.desktop %{buildroot}%{_datadir}
 %{_datadir}/applications/atml.desktop
 
 %changelog
-* Sat Oct 04 2026 ATML contributors - 1.1.0-1
+* Sat Oct 04 2026 ATML contributors - 1.1.1-1
+- 1.1.1: `build -o` creates missing output directories.
 - 1.1.0: new `atml publish` site publisher (multi-page, assets, sitemap).

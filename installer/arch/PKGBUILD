@@ -1,6 +1,6 @@
 # Maintainer: ATML contributors
 pkgname=atml
-pkgver=1.1.0
+pkgver=1.1.1
 pkgrel=1
 pkgdesc="ATML template compiler CLI, HTML converter runtime, and editor support"
 arch=('any')
@@ -31,7 +31,7 @@ package() {
 if [ -f /usr/share/atml/compiler/atml.py ]; then
   exec python3 /usr/share/atml/compiler/atml.py "$@"
 else
-  echo "ATML 1.1.0 (/usr/share/atml)" >&2
+  echo "ATML 1.1.1 (/usr/share/atml)" >&2
   ls /usr/share/atml >&2
 fi
 EOF
