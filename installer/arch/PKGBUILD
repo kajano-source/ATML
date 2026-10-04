@@ -10,7 +10,7 @@ depends=('python')
 optdepends=('tk: GUI installer'
             'code: VS Code integration (or cursor for Cursor)')
 source=("https://github.com/kajano-source/ATML/releases/download/v$pkgver/atml-$pkgver-linux.tar.gz")
-sha256sums=('REPLACE_WITH_RELEASE_TARBALL_SHA256')
+sha256sums=('10815f1f3a61718078e5a51f7d951b89d60da009ddd7369be0715552ff5226ef')
 
 package() {
   local src="$srcdir/atml-linux"

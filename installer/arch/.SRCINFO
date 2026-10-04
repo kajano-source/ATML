@@ -1,0 +1,14 @@
+pkgbase = atml
+	pkgdesc = Animation & Transition Markup Language — .atml to .html compiler, runtime and editor support
+	pkgver = 1.4.1
+	pkgrel = 1
+	url = https://github.com/kajano-source/ATML
+	arch = any
+	license = MIT
+	depends = python
+	optdepends = tk: GUI installer
+	optdepends = code: VS Code integration (or cursor for Cursor)
+	source = https://github.com/kajano-source/ATML/releases/download/v1.4.1/atml-1.4.1-linux.tar.gz
+	sha256sums = 10815f1f3a61718078e5a51f7d951b89d60da009ddd7369be0715552ff5226ef
+
+pkgname = atml
