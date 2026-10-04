@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2 — 2026-10-04
+
+- Fix: installer shims pointed at `compiler/atml.py`; corrected to `compiler/atmlc.py`
+  (the installed `atml` command works now).
+- Fix: extension package icon is PNG (`vsce` rejects SVG); added `repository` field
+  so `vsce package` succeeds.
+
 ## 1.1.1 — 2026-10-04
 
 - Fix: `atml build -o dist/...` now creates missing output directories instead of

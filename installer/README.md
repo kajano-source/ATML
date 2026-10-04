@@ -1,4 +1,4 @@
-# ATML 1.1.1 — Installer
+# ATML 1.1.2 — Installer
 
 All installers place the same payload: `compiler/`, `runtime/`, `examples/`,
 `vscode-atml/` syntax support, an `atml` launcher on PATH, and an optional
@@ -20,13 +20,13 @@ Install locations:
 | Arch | PKGBUILD | `cd installer/arch && makepkg -si` (or `yay -S atml` once published) |
 | Arch | shell script | `bash scripts/install.sh --yes` |
 | Debian/Ubuntu | GUI installer | `python3 installer/gui_installer.py` |
-| Debian/Ubuntu | .deb | stage `installer/debian/usr/...` next to `installer/debian/DEBIAN/control`, then `dpkg-deb --build installer/debian atml_1.1.1_all.deb && sudo dpkg -i atml_1.1.1_all.deb` |
+| Debian/Ubuntu | .deb | stage `installer/debian/usr/...` next to `installer/debian/DEBIAN/control`, then `dpkg-deb --build installer/debian atml_1.1.2_all.deb && sudo dpkg -i atml_1.1.2_all.deb` |
 | Debian/Ubuntu | shell script | `bash scripts/install.sh --yes` |
 | Fedora | GUI installer | `python3 installer/gui_installer.py` |
-| Fedora | .rpm | `rpmbuild -bb installer/fedora/atml.spec` then `sudo dnf install ~/rpmbuild/RPMS/noarch/atml-1.1.1-*.rpm` |
+| Fedora | .rpm | `rpmbuild -bb installer/fedora/atml.spec` then `sudo dnf install ~/rpmbuild/RPMS/noarch/atml-1.1.2-*.rpm` |
 | Fedora | shell script | `bash scripts/install.sh --yes` |
-| Windows | Inno Setup (recommended) | `iscc installer\windows\atml.iss`, run the produced `atml-1.1.1-setup.exe` |
-| Windows | standalone GUI exe | `installer\windows\build-exe.bat` (PyInstaller onefile), run `dist\atml-setup-1.1.1.exe` |
+| Windows | Inno Setup (recommended) | `iscc installer\windows\atml.iss`, run the produced `atml-1.1.2-setup.exe` |
+| Windows | standalone GUI exe | `installer\windows\build-exe.bat` (PyInstaller onefile), run `dist\atml-setup-1.1.2.exe` |
 | Windows | PowerShell | `powershell -ExecutionPolicy Bypass -File scripts\install.ps1 -Yes` |
 | Any (git clone fallback) | headless/CI | `python3 installer/cli_install.py --only compiler,runtime,examples,vscode --editor vscode --prefix ~/.local --yes` |
 
@@ -45,7 +45,7 @@ Headless flags (`installer/cli_install.py`):
 
 | Editor | Detection | Connect behaviour |
 |--------|-----------|-------------------|
-| VS Code | `code --version`, `~/.vscode`, `/usr/bin/code` | `code --install-extension *.vsix` if a `.vsix` is present, else syntax-only copy to `~/.vscode/extensions/atml-1.1.1/` |
+| VS Code | `code --version`, `~/.vscode`, `/usr/bin/code` | `code --install-extension *.vsix` if a `.vsix` is present, else syntax-only copy to `~/.vscode/extensions/atml-1.1.2/` |
 | Cursor | `cursor --version`, `~/.cursor`, `/usr/bin/cursor`, `/opt/cursor` | reuses the same `.vsix`/syntaxes payload via the `cursor` CLI / `~/.cursor/extensions/` |
 | JetBrains | Toolbox `~/.local/share/JetBrains/Toolbox`, `~/Library/...`, `~/.config/JetBrains/*`, `/opt/*storm*`, `idea` bins | no marketplace plugin bundled: writes `jetbrains-filetypes-note.txt` (Settings → Editor → File Types → `*.atml`) + external-tool hint for `atml` |
 | Devin Desktop | `~/Applications/Devin*`, `~/.devin*`, `devin` bin | no extension API: writes `devin-cli-note.txt` (CLI + open-as-text workflow) |

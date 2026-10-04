@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ATML 1.1.1 GUI installer — Python standard library only (tkinter + ttk).
+"""ATML 1.1.2 GUI installer — Python standard library only (tkinter + ttk).
 
 Run:
     python3 installer/gui_installer.py
@@ -28,7 +28,7 @@ except ImportError:  # tkinter missing (e.g. minimal Arch install)
     tk = None  # type: ignore
     ttk = None  # type: ignore
 
-ATML_VERSION = "1.1.1"
+ATML_VERSION = "1.1.2"
 APP_TITLE = f"ATML {ATML_VERSION} Setup"
 
 # ---------------------------------------------------------------------------
@@ -289,10 +289,8 @@ class InstallEngine:
                 "#!/usr/bin/env bash\n"
                 f"# ATML {ATML_VERSION} shim -> {self.share}\n"
                 f'ATML_SHARE="{self.share}"\n'
-                'if [ -f "$ATML_SHARE/compiler/atml.py" ]; then\n'
-                '  exec python3 "$ATML_SHARE/compiler/atml.py" "$@"\n'
-                'elif [ -f "$ATML_SHARE/compiler/__main__.py" ]; then\n'
-                '  exec python3 -m compiler "$@"\n'
+                'if [ -f "$ATML_SHARE/compiler/atmlc.py" ]; then\n'
+                '  exec python3 "$ATML_SHARE/compiler/atmlc.py" "$@"\n'
                 'else\n'
                 f'  echo "ATML {ATML_VERSION} (share: $ATML_SHARE)" >&2\n'
                 '  echo "compiler/ payload not bundled in this checkout; "\n'

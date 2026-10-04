@@ -1,7 +1,7 @@
-; ATML 1.1.1 — Inno Setup script (Windows).
+; ATML 1.1.2 — Inno Setup script (Windows).
 ; Build with Inno Setup 6: iscc installer\windows\atml.iss
 #define MyAppName "ATML"
-#define MyAppVersion "1.1.1"
+#define MyAppVersion "1.1.2"
 #define MyAppPublisher "ATML contributors"
 
 [Setup]
@@ -11,7 +11,7 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={localappdata}\ATML
 DisableProgramGroupPage=yes
-OutputBaseFilename=atml-1.1.1-setup
+OutputBaseFilename=atml-1.1.2-setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -49,7 +49,7 @@ begin
     BinDir := ExpandConstant('{app}\bin');
     ForceDirectories(BinDir);
     Shim := BinDir + '\atml.bat';
-    ShimContents := '@echo off' + #13#10 + 'python "' + ExpandConstant('{app}') + '\compiler\atml.py" %*' + #13#10;
+    ShimContents := '@echo off' + #13#10 + 'python "' + ExpandConstant('{app}') + '\compiler\atmlc.py" %*' + #13#10;
     SaveStringToFile(Shim, ShimContents, False);
   end;
 end;

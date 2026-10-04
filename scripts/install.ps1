@@ -1,8 +1,8 @@
-# ATML 1.1.1 installer for Windows (PowerShell).
+# ATML 1.1.2 installer for Windows (PowerShell).
 # Usage: powershell -ExecutionPolicy Bypass -File scripts\install.ps1 [-Yes]
 param([switch]$Yes)
 $ErrorActionPreference = "Stop"
-$AtmlVersion = "1.1.1"
+$AtmlVersion = "1.1.2"
 $Base = Join-Path $env:LOCALAPPDATA "ATML"
 $BinDir = Join-Path $Base "bin"
 $Root = Split-Path (Split-Path $MyInvocation.MyCommand.Path -Parent) -Parent
@@ -29,7 +29,7 @@ Copy-Tree (Join-Path $Root "examples") (Join-Path $Base "examples")
 
 @'
 @echo off
-python "%~dp0..\compiler\atml.py" %*
+python "%~dp0..\compiler\atmlc.py" %*
 '@ | Set-Content -Encoding Ascii (Join-Path $BinDir "atml.bat")
 Write-Host "shim -> $BinDir\atml.bat"
 

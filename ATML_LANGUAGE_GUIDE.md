@@ -2149,6 +2149,13 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.1.2 — 2026-10-04
+
+- Fix: installer shims (`gui_installer`, `cli_install`, `install.sh/.ps1`,
+  PKGBUILD, spec, Inno script) now exec `compiler/atmlc.py`, not `compiler/atml.py`.
+- Fix: VS Code package icon is `icons/atml-icon-128.png` (vsce rejects SVG);
+  `repository` field added so the `.vsix` builds.
+
 ## 1.1.1 — 2026-10-04
 
 - Fix: `build -o` creates missing output directories (`dist/` no longer needs
