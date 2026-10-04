@@ -1,0 +1,23 @@
+<atml version="1.0" fps="60" width="800" height="600" title="Hello ATML" background="#0f172a">
+<stage id="main" width="800" height="600" fps="60" background="#0f172a">
+  <scene id="intro" dur="5s">
+    <actor id="ball" x="100" y="200" w="100" h="100" shape="circle" fill="#f472b6">
+      <circle cx="50" cy="50" r="48" fill="#f472b6"/>
+    </actor>
+    <actor id="box" x="100" y="400" w="140" h="60" shape="rect" fill="#4da3ff">
+      <rect x="0" y="0" width="140" height="60" rx="10" fill="#4da3ff"/>
+    </actor>
+    <actor id="greeting" x="250" y="60" w="300" h="60" shape="text" fill="#ffffff">Hello, ATML!</actor>
+    <animate target="ball" dur="2s" ease="ease-out">
+      <key at="0%" x="100" opacity="0"/>
+      <key at="100%" x="550" opacity="1"/>
+    </animate>
+    <animate target="box" dur="2s" delay="0.5s" ease="bounce">
+      <key at="0%" y="400" opacity="0"/>
+      <key at="100%" y="250" opacity="1"/>
+    </animate>
+    <animate id="fadeText" target="greeting" dur="1.5s" ease="ease-in-out" from-opacity="0" to-opacity="1"/>
+    <trigger on="click" target="ball" do="reverse"/>
+  </scene>
+</stage>
+</atml>

@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Python unit tests
+        run: |
+          if [ -d tests ]; then
+            python3 -m unittest discover -s tests -v
+          else
+            echo "no tests dir, skipping"
+          fi
+      - name: Compile check (atmlc smoke)
+        run: |
+          python3 compiler/atmlc.py --version || python3 compiler/atmlc.py --help || true
+      - name: Build all examples
+        run: |
+          mkdir -p dist
+          fail=0
+          for f in examples/*.atml; do
+            [ -e "$f" ] || continue
+            echo "building $f"
+            python3 compiler/atmlc.py build "$f" -o "dist/$(basename "${f%.atml}.html")" || fail=1
+          done
+          exit $fail
+      - name: Validate extension manifests (JSON)
+        run: |
+          python3 -c "import json; json.load(open('vscode-atml/package.json')); print('package.json OK')"
+          test -f vscode-atml/syntaxes/atml.tmLanguage.json && python3 -c "import json; json.load(open('vscode-atml/syntaxes/atml.tmLanguage.json')); print('grammar OK')" || echo "grammar optional, skipping"

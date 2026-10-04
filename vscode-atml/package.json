@@ -1,0 +1,103 @@
+{
+  "name": "atml",
+  "displayName": "ATML",
+  "description": "Language support for ATML (Animation Text Markup Language) — syntax highlighting, snippets, build, preview, hover docs and completions.",
+  "version": "1.0.0",
+  "publisher": "atml-lang",
+  "license": "MIT",
+  "icon": "./icons/atml.svg",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:atml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "atml",
+        "aliases": [
+          "ATML",
+          "AnimationTextMarkupLanguage"
+        ],
+        "extensions": [
+          ".atml"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/atml.svg",
+          "dark": "./icons/atml.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "atml",
+        "scopeName": "text.html.atml",
+        "path": "./syntaxes/atml.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.atml": "html"
+        }
+      }
+    ],
+    "snippets": [
+      {
+        "language": "atml",
+        "path": "./snippets/atml.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "atml.build",
+        "title": "ATML: Build to HTML"
+      },
+      {
+        "command": "atml.preview",
+        "title": "ATML: Preview Animation"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "atml.build",
+        "key": "ctrl+shift+b",
+        "when": "editorLangId == atml"
+      }
+    ],
+    "configuration": {
+      "title": "ATML",
+      "properties": {
+        "atml.defaultFps": {
+          "type": "number",
+          "default": 12,
+          "minimum": 1,
+          "maximum": 120,
+          "description": "Default frames-per-second assumed for ATML preview/status bar when no fps attribute is found."
+        },
+        "atml.autoBuildOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically run ATML: Build to HTML when an .atml file is saved."
+        },
+        "atml.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the `atml` compiler binary or atmlc.py script. Leave empty to auto-detect (bundled compiler, PATH `atml`, or ../compiler/atmlc.py)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

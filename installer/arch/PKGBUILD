@@ -1,0 +1,55 @@
+# Maintainer: ATML contributors
+pkgname=atml
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="ATML template compiler CLI, HTML converter runtime, and editor support"
+arch=('any')
+url="https://example.com/atml"
+license=('MIT')
+depends=('python')
+optdepends=('tk: GUI installer'
+            'code: VS Code integration (or cursor for Cursor)')
+source=()
+sha256sums=()
+
+package() {
+  local root="$startdir/../.."
+  [ -d "$root/compiler" ] || root="$srcdir/.."
+  install -dm755 "$pkgdir/usr/bin" "$pkgdir/usr/share/atml" \
+    "$pkgdir/usr/share/applications" "$pkgdir/usr/share/mime/packages" \
+    "$pkgdir/usr/share/icons/hicolor/scalable/mimetypes"
+
+  for d in compiler runtime examples vscode-atml; do
+    if [ -d "$root/$d" ]; then
+      cp -r "$root/$d" "$pkgdir/usr/share/atml/$d"
+    fi
+  done
+
+  # `atml` shim on PATH.
+  cat > "$pkgdir/usr/bin/atml" <<'EOF'
+#!/usr/bin/env bash
+if [ -f /usr/share/atml/compiler/atml.py ]; then
+  exec python3 /usr/share/atml/compiler/atml.py "$@"
+else
+  echo "ATML 1.0.0 (/usr/share/atml)" >&2
+  ls /usr/share/atml >&2
+fi
+EOF
+  chmod 755 "$pkgdir/usr/bin/atml"
+
+  # GUI + CLI installers (also usable post-install).
+  install -Dm644 "$root/installer/gui_installer.py" "$pkgdir/usr/share/atml/installer/gui_installer.py"
+  install -Dm644 "$root/installer/cli_install.py" "$pkgdir/usr/share/atml/installer/cli_install.py"
+
+  # Desktop file + MIME registration.
+  install -Dm644 "$srcdir/../atml.desktop" "$pkgdir/usr/share/applications/atml.desktop"
+  cat > "$pkgdir/usr/share/mime/packages/atml.xml" <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/html-atml">
+    <comment>ATML template</comment>
+    <glob pattern="*.atml"/>
+  </mime-type>
+</mime-info>
+EOF
+}

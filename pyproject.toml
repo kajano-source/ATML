@@ -1,0 +1,8 @@
+[project]
+name = "atml"
+version = "1.0.0"
+description = "AnimationTextMarkupLanguage compiler and runtime"
+requires-python = ">=3.8"
+
+[project.scripts]
+atml = "compiler.atmlc:main"

@@ -1,0 +1,15 @@
+# Node / Python / editor / build artefacts
+node_modules/
+dist/
+*.vsix
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode-test/
+.parcel-cache/
+out/
+# OS noise
+.DS_Store
+Thumbs.db
+# Local overrides
+.env

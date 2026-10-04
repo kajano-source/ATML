@@ -1,0 +1,59 @@
+{
+  "comments": {
+    "blockComment": ["<!--", "-->"]
+  },
+  "brackets": [
+    ["<!--", "-->"],
+    ["<", ">"],
+    ["{", "}"],
+    ["(", ")"],
+    ["[", "]"]
+  ],
+  "autoClosingPairs": [
+    { "open": "<!--", "close": "-->" },
+    { "open": "<", "close": ">" },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] },
+    { "open": "{", "close": "}" },
+    { "open": "[", "close": "]" },
+    { "open": "(", "close": ")" },
+    { "open": "<atml>", "close": "</atml>", "notIn": ["string", "comment"] },
+    { "open": "<stage>", "close": "</stage>", "notIn": ["string", "comment"] },
+    { "open": "<scene>", "close": "</scene>", "notIn": ["string", "comment"] },
+    { "open": "<actor>", "close": "</actor>", "notIn": ["string", "comment"] },
+    { "open": "<animate>", "close": "</animate>", "notIn": ["string", "comment"] },
+    { "open": "<timeline>", "close": "</timeline>", "notIn": ["string", "comment"] },
+    { "open": "<script type=\"atml\">", "close": "</script>", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [
+    ["<", ">"],
+    ["\"", "\""],
+    ["'", "'"],
+    ["<!--", "-->"],
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  "indentationRules": {
+    "increaseIndentPattern": "<(atml|stage|scene|actor|part|draw|animate|tween|timeline|clip|transition|loop|trigger|camera|script|style)(\\s[^>]*)?>(?!.*</\\1>)",
+    "decreaseIndentPattern": "^\\s*</(atml|stage|scene|actor|part|draw|animate|tween|timeline|clip|transition|loop|trigger|camera|script|style)>"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "<(atml|stage|scene|actor|animate|timeline|script|style)(\\s[^>]*)?>(?!.*</\\1>)",
+      "action": { "indentAction": "indentOutdent" }
+    },
+    {
+      "beforeText": "<!--(?!.*-->)",
+      "afterText": "-->",
+      "action": { "indentAction": "indentOutdent" }
+    }
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*<!--\\s*#region\\b.*-->",
+      "end": "^\\s*<!--\\s*#endregion\\b.*-->"
+    }
+  },
+  "wordPattern": "[a-zA-Z][a-zA-Z0-9-]*(?:\\.[a-zA-Z][a-zA-Z0-9-]*)*"
+}

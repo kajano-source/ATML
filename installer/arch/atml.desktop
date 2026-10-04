@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ATML 1.0.0
+Comment=ATML template compiler
+Exec=/usr/bin/atml %f
+Icon=text-html
+MimeType=text/html-atml;
+Categories=Development;TextEditor;
+Terminal=true

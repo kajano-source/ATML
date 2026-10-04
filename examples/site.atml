@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Pawsome - mini site</title>
+<style>body{font-family:sans-serif;margin:0}nav{background:#111827;color:#fff;padding:12px 24px}.hero{background:linear-gradient(135deg,#4da3ff,#c084fc);color:#fff;padding:64px 24px;text-align:center}.cards{display:flex;gap:16px;padding:24px;flex-wrap:wrap}footer{background:#111827;color:#aaa;padding:16px;text-align:center}</style>
+</head>
+<body>
+<nav id="nav" a-slide="" a-dur="0.8s">Pawsome Studio</nav>
+<div class="hero">
+<h1 id="hero-title" a-fade="" a-dur="1.2s">Welcome to Pawsome</h1>
+<p id="hero-sub" a-fade="" a-dur="1.2s" a-delay="0.3s">We build playful animated websites.</p>
+<button id="cta" a-bounce="" a-dur="1s" a-delay="0.6s">Get started</button>
+</div>
+<div class="cards">
+<div class="card" id="c1" a-float="" a-dur="3s" a-loop="infinite" style="border:1px solid #ddd;border-radius:8px;padding:16px;flex:1;">Fast: ships as a single HTML file.</div>
+<div class="card" id="c2" a-float="" a-dur="3.5s" a-loop="infinite" style="border:1px solid #ddd;border-radius:8px;padding:16px;flex:1;">Smooth: per-node FPS control.</div>
+<div class="card" id="c3" a-float="" a-dur="4s" a-loop="infinite" style="border:1px solid #ddd;border-radius:8px;padding:16px;flex:1;">Fun: morphs, timelines, triggers.</div>
+</div>
+<atml version="1.0" fps="60" width="800" height="300" title="Pawsome">
+<stage id="strip" width="800" height="300" fps="60" background="#f8fafc">
+  <scene id="s" dur="5s">
+    <actor id="logo" x="340" y="80" w="120" h="120" shape="circle" fill="#4da3ff">
+      <circle cx="60" cy="60" r="58" fill="#4da3ff"/>
+      <text x="60" y="66" text-anchor="middle" fill="#fff" font-size="28">PA</text>
+    </actor>
+    <animate target="logo" dur="2s" ease="elastic" loop="infinite">
+      <key at="0%" rotate="0" scale="1"/><key at="50%" rotate="180" scale="1.15"/><key at="100%" rotate="360" scale="1"/>
+    </animate>
+    <script type="atml">
+    actor Badge { x: 10; y: 10; fill: #f472b6 }
+    animate LogoSpin -> { rotate: 360 } over 2s ease linear fps 60 loop infinite
+    timeline Intro { at 0s: play LogoSpin; }
+    on click(#cta) -> play LogoSpin
+    fps 60;
+    stage 800x300;
+    </script>
+  </scene>
+</stage>
+</atml>
+<footer id="foot" a-fade="" a-dur="1s">Made with ATML v1.0</footer>
+</body>
+</html>

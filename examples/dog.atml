@@ -1,0 +1,32 @@
+<atml version="1.0" fps="30" width="800" height="600" title="ATML Dog" background="#fef3c7">
+<stage id="yard" width="800" height="600" fps="30" background="#fef3c7">
+  <scene id="play" dur="8s" background="#fef3c7">
+    <actor id="dog" x="200" y="220" w="400" h="280" shape="group" fill="#b45309">
+      <part id="body"><rect x="90" y="120" width="220" height="110" rx="40" fill="#b45309"/></part>
+      <part id="head"><circle cx="300" cy="90" r="60" fill="#d97706"/><circle cx="282" cy="80" r="8" fill="#111"/><circle cx="318" cy="80" r="8" fill="#111"/><ellipse cx="300" cy="115" rx="14" ry="10" fill="#111"/></part>
+      <part id="earL"><poly points="250,50 265,0 295,45" fill="#92400e"/></part>
+      <part id="earR"><poly points="305,45 335,0 350,50" fill="#92400e"/></part>
+      <part id="tail"><path d="M 95 140 C 50 120 40 70 70 50" stroke="#b45309" stroke-width="18" fill="none"/></part>
+      <part id="legFL"><rect x="120" y="220" width="30" height="60" fill="#92400e"/></part>
+      <part id="legFR"><rect x="165" y="220" width="30" height="60" fill="#92400e"/></part>
+      <part id="legBL"><rect x="250" y="220" width="30" height="60" fill="#92400e"/></part>
+      <part id="legBR"><rect x="295" y="220" width="30" height="60" fill="#92400e"/></part>
+    </actor>
+    <animate target="dog.tail" dur="0.5s" ease="ease-in-out" loop="infinite" direction="alternate">
+      <key at="0%" rotate="-12"/><key at="100%" rotate="14"/>
+    </animate>
+    <animate target="dog" dur="1s" ease="ease-in-out" loop="infinite" direction="alternate">
+      <key at="0%" y="220"/><key at="100%" y="200"/>
+    </animate>
+    <animate target="dog.head" dur="3s" ease="ease-in-out" loop="infinite" direction="alternate">
+      <key at="0%" rotate="-6"/><key at="100%" rotate="6"/>
+    </animate>
+    <timeline id="playline" fps="30" autoplay="true">
+      <clip target="dog.tail" at="0s" dur="2s"/>
+      <clip target="dog" at="0s" dur="4s"/>
+    </timeline>
+    <trigger on="click" target="dog" do="toggle"/>
+    <camera id="cam1" x="0" y="0" zoom="1" follow="dog"/>
+  </scene>
+</stage>
+</atml>

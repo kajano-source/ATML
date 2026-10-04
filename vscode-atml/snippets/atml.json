@@ -1,0 +1,202 @@
+{
+  "ATML document scaffold": {
+    "prefix": "atml-doc",
+    "body": [
+      "<atml fps=\"${1:12}\">",
+      "  <stage width=\"${2:800}\" height=\"${3:600}\">",
+      "    <scene dur=\"${4:3s}\">",
+      "      ${0}",
+      "    </scene>",
+      "  </stage>",
+      "</atml>"
+    ],
+    "description": "Full ATML document scaffold with stage + scene"
+  },
+  "ATML stage": {
+    "prefix": "stage",
+    "body": [
+      "<stage width=\"${1:800}\" height=\"${2:600}\">",
+      "  ${0}",
+      "</stage>"
+    ],
+    "description": "ATML stage element"
+  },
+  "ATML scene": {
+    "prefix": "scene",
+    "body": [
+      "<scene dur=\"${1:3s}\">",
+      "  ${0}",
+      "</scene>"
+    ],
+    "description": "ATML scene element"
+  },
+  "ATML actor (rect)": {
+    "prefix": "actor",
+    "body": [
+      "<actor id=\"${1:hero}\" shape=\"rect\" x=\"${2:100}\" y=\"${3:100}\" width=\"${4:80}\" height=\"${5:80}\" fill=\"${6:#7C3AED}\" />${0}"
+    ],
+    "description": "ATML rect actor"
+  },
+  "ATML actor (circle)": {
+    "prefix": "actor-circle",
+    "body": [
+      "<actor id=\"${1:ball}\" shape=\"circle\" cx=\"${2:200}\" cy=\"${3:150}\" r=\"${4:40}\" fill=\"${5:#7C3AED}\" />${0}"
+    ],
+    "description": "ATML circle actor"
+  },
+  "ATML actor (path)": {
+    "prefix": "actor-path",
+    "body": [
+      "<actor id=\"${1:shape}\" shape=\"path\" d=\"${2:M0,0 L100,0 L50,100 Z}\" fill=\"${3:#7C3AED}\" stroke=\"${4:none}\" />${0}"
+    ],
+    "description": "ATML path actor"
+  },
+  "ATML actor (text)": {
+    "prefix": "actor-text",
+    "body": [
+      "<actor id=\"${1:title}\" shape=\"text\" text=\"${2:Hello}\" x=\"${3:100}\" y=\"${4:100}\" font-size=\"${5:48}\" fill=\"${6:#111111}\" />${0}"
+    ],
+    "description": "ATML text actor"
+  },
+  "ATML draw": {
+    "prefix": "draw",
+    "body": [
+      "<draw target=\"${1:hero}\" dur=\"${2:2s}\" ease=\"${3:ease-in-out}\" />${0}"
+    ],
+    "description": "ATML draw (stroke-on) directive"
+  },
+  "ATML pixel": {
+    "prefix": "pixel",
+    "body": [
+      "<pixel x=\"${1:0}\" y=\"${2:0}\" fill=\"${3:#111111}\" />${0}"
+    ],
+    "description": "ATML pixel element"
+  },
+  "ATML part": {
+    "prefix": "part",
+    "body": [
+      "<part id=\"${1:arm}\" shape=\"${2:rect}\" anchor=\"${3:center}\">",
+      "  ${0}",
+      "</part>"
+    ],
+    "description": "ATML part (sub-actor) element"
+  },
+  "ATML animate + key": {
+    "prefix": "animate",
+    "body": [
+      "<animate target=\"${1:hero}\" dur=\"${2:2s}\" ease=\"${3:ease-in-out}\">",
+      "  <key at=\"${4:0%}\" x=\"${5:0}\" y=\"${6:0}\" opacity=\"${7:1}\" />",
+      "  <key at=\"${8:100%}\" x=\"${9:200}\" y=\"${10:0}\" opacity=\"${11:1}\" />",
+      "  ${0}",
+      "</animate>"
+    ],
+    "description": "ATML animate block with keyframes"
+  },
+  "ATML tween": {
+    "prefix": "tween",
+    "body": [
+      "<tween target=\"${1:hero}\" from=\"${2:0}\" to=\"${3:200}\" dur=\"${4:1s}\" ease=\"${5:linear}\" />${0}"
+    ],
+    "description": "ATML tween element"
+  },
+  "ATML timeline + clip": {
+    "prefix": "timeline",
+    "body": [
+      "<timeline>",
+      "  <clip at=\"${1:0s}\" dur=\"${2:1s}\">",
+      "    ${0}",
+      "  </clip>",
+      "</timeline>"
+    ],
+    "description": "ATML timeline with a clip"
+  },
+  "ATML transition + use": {
+    "prefix": "transition",
+    "body": [
+      "<transition id=\"${1:fade}\" dur=\"${2:0.5s}\" ease=\"${3:ease-out}\" />",
+      "<use target=\"${4:hero}\" transition=\"${1:fade}\" />${0}"
+    ],
+    "description": "ATML transition definition + use"
+  },
+  "ATML trigger": {
+    "prefix": "trigger",
+    "body": [
+      "<trigger on=\"${1:click}\" target=\"${2:hero}\" play=\"${3:jump}\" />${0}"
+    ],
+    "description": "ATML trigger element"
+  },
+  "ATML camera": {
+    "prefix": "camera",
+    "body": [
+      "<camera follow=\"${1:hero}\" dur=\"${2:2s}\" ease=\"${3:smooth}\" />${0}"
+    ],
+    "description": "ATML camera element"
+  },
+  "ATML script block": {
+    "prefix": "script-atml",
+    "body": [
+      "<script type=\"atml\">",
+      "  actor ${1:hero} {",
+      "    animate over ${2:2s} ease ${3:ease-in-out} from ${4:0} to ${5:200} at ${6:0%};",
+      "  }",
+      "  ${0}",
+      "</script>"
+    ],
+    "description": "ATMLScript block"
+  },
+  "ATML a-fade shorthand": {
+    "prefix": "a-fade",
+    "body": ["a-fade=\"${1:1s}\"${0}"],
+    "description": "a-fade sugar attribute"
+  },
+  "ATML a-slide shorthand": {
+    "prefix": "a-slide",
+    "body": ["a-slide=\"${1:200px} ${2:1s}\"${0}"],
+    "description": "a-slide sugar attribute"
+  },
+  "ATML a-bounce shorthand": {
+    "prefix": "a-bounce",
+    "body": ["a-bounce=\"${1:1s}\"${0}"],
+    "description": "a-bounce sugar attribute"
+  },
+  "ATML a-spin shorthand": {
+    "prefix": "a-spin",
+    "body": ["a-spin=\"${1:360deg} ${2:1s}\"${0}"],
+    "description": "a-spin sugar attribute"
+  },
+  "ATML a-float shorthand": {
+    "prefix": "a-float",
+    "body": ["a-float=\"${1:1s}\"${0}"],
+    "description": "a-float sugar attribute"
+  },
+  "ATML a-morph shorthand": {
+    "prefix": "a-morph",
+    "body": ["a-morph=\"${1:target-id} ${2:1s}\"${0}"],
+    "description": "a-morph sugar attribute"
+  },
+  "ATML dog starter": {
+    "prefix": "dog",
+    "body": [
+      "<atml fps=\"12\">",
+      "  <stage width=\"800\" height=\"600\">",
+      "    <scene dur=\"3s\">",
+      "      <actor id=\"dog-body\" shape=\"rect\" x=\"300\" y=\"300\" width=\"160\" height=\"90\" fill=\"#B08968\" />",
+      "      <actor id=\"dog-head\" shape=\"circle\" cx=\"480\" cy=\"300\" r=\"55\" fill=\"#B08968\" />",
+      "      <part id=\"dog-tail\" shape=\"rect\" anchor=\"left\">",
+      "        <animate target=\"dog-tail\" dur=\"0.6s\" loop=\"true\">",
+      "          <key at=\"0%\" rotate=\"-20\" />",
+      "          <key at=\"100%\" rotate=\"20\" />",
+      "        </animate>",
+      "      </part>",
+      "      <animate target=\"dog-body\" dur=\"3s\" ease=\"ease-in-out\">",
+      "        <key at=\"0%\" x=\"0\" y=\"0\" />",
+      "        <key at=\"100%\" x=\"200\" y=\"0\" />",
+      "      </animate>",
+      "      ${0}",
+      "    </scene>",
+      "  </stage>",
+      "</atml>"
+    ],
+    "description": "ATML dog starter scene"
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "name": "ATML",
+  "scopeName": "text.html.atml",
+  "fileTypes": ["atml"],
+  "uuid": "b3f2a1c4-7e5d-4a9b-8c1d-2f3e4a5b6c7d",
+  "information_for_contributors": [
+    "ATML (Animation Text Markup Language) grammar. HTML-based with custom ATML tags and <script type=\"atml\"> ATMLScript blocks."
+  ],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#doctype" },
+    { "include": "#script-atml" },
+    { "include": "#script-generic" },
+    { "include": "#style-block" },
+    { "include": "#atml-tag" },
+    { "include": "text.html.basic" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.block.atml",
+      "patterns": [
+        {
+          "name": "comment.block.html.atml",
+          "begin": "<!--",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.html" }
+          },
+          "end": "-->",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.comment.html" }
+          }
+        }
+      ]
+    },
+    "doctype": {
+      "name": "meta.tag.sgml.doctype.atml",
+      "begin": "(<\\?)(xml)?",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.html" }
+      },
+      "end": "(\\?>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.end.html" }
+      }
+    },
+    "script-atml": {
+      "name": "meta.embedded.block.atml",
+      "begin": "(<)(script)\\b([^>]*?)(type\\s*=\\s*)((\"atml\")|('atml')|(atml))([^>]*?)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.atml" },
+        "4": { "name": "entity.other.attribute-name.atml" },
+        "5": { "name": "string.quoted.atml" }
+      },
+      "end": "(</)(script)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.atml" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "patterns": [{ "include": "#atmlscript" }]
+    },
+    "script-generic": {
+      "name": "meta.tag.script.atml",
+      "begin": "(<)(script)\\b(?![^>]*(type\\s*=\\s*(\"atml\"|'atml'|atml)))",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.html" }
+      },
+      "end": "(</)(script)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "patterns": [{ "include": "source.js" }]
+    },
+    "style-block": {
+      "name": "meta.embedded.block.style.atml",
+      "begin": "(<)(style)\\b",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.style.html" }
+      },
+      "end": "(</)(style)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.style.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "patterns": [{ "include": "source.css" }]
+    },
+    "atml-tag": {
+      "name": "meta.tag.atml",
+      "patterns": [
+        {
+          "name": "meta.tag.structure.atml",
+          "begin": "(</?)(atml|stage|scene)\\b",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.atml" },
+            "2": { "name": "entity.name.tag.structure.atml" }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.atml" }
+          },
+          "patterns": [{ "include": "#atml-attributes" }]
+        },
+        {
+          "name": "meta.tag.entity.atml",
+          "begin": "(</?)(actor|part|draw|pixel|key|animate|tween|timeline|clip|transition|loop|trigger|camera|use)\\b",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.atml" },
+            "2": { "name": "entity.name.tag.atml" }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.atml" }
+          },
+          "patterns": [{ "include": "#atml-attributes" }]
+        }
+      ]
+    },
+    "atml-attributes": {
+      "patterns": [
+        {
+          "name": "entity.other.attribute-name.atml",
+          "match": "\\b(a-[a-zA-Z][a-zA-Z0-9-]*)\\b",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.sugar.atml" }
+          }
+        },
+        {
+          "name": "entity.other.attribute-name.atml",
+          "match": "\\b(fps|dur|duration|delay|ease|easing|loop|target|targets|at|from|to|morph|follow|anchor|shape|fill|stroke|stroke-width|x|y|cx|cy|r|rx|ry|width|height|d|points|text|font|font-size|opacity|rotate|scale|translate|href|src|id|class|name|value|count|repeat|mode|direction|trigger|on|event|when|play|fps-hint)\\b"
+        },
+        {
+          "name": "string.quoted.double.atml",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.atml" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.atml" }
+          },
+          "patterns": [
+            { "include": "#atml-number-unit" },
+            { "include": "#atml-easing" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.atml",
+          "begin": "'",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.atml" }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.atml" }
+          },
+          "patterns": [
+            { "include": "#atml-number-unit" },
+            { "include": "#atml-easing" }
+          ]
+        },
+        { "include": "#atml-number-unit" }
+      ]
+    },
+    "atml-number-unit": {
+      "patterns": [
+        {
+          "name": "constant.numeric.atml",
+          "match": "\\b\\d+(?:\\.\\d+)?(?:s|ms|%|px|deg|fr)?\\b"
+        }
+      ]
+    },
+    "atml-easing": {
+      "name": "support.constant.easing.atml",
+      "match": "\\b(linear|ease|ease-in|ease-out|ease-in-out|bounce|elastic|spring|smooth|step)\\b"
+    },
+    "atmlscript": {
+      "patterns": [
+        { "include": "#atmlscript-comment" },
+        { "include": "#atmlscript-string" },
+        { "include": "#atmlscript-keyword" },
+        { "include": "#atmlscript-easing" },
+        { "include": "#atmlscript-number-unit" },
+        { "include": "#atmlscript-taglike" }
+      ]
+    },
+    "atmlscript-comment": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.atmlscript",
+          "begin": "//",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.atmlscript" }
+          },
+          "end": "$"
+        },
+        {
+          "name": "comment.block.atmlscript",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.atmlscript" }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.comment.atmlscript" }
+          }
+        },
+        {
+          "name": "comment.block.html.atml",
+          "begin": "<!--",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.html" }
+          },
+          "end": "-->",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.comment.html" }
+          }
+        }
+      ]
+    },
+    "atmlscript-string": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.atmlscript",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.atmlscript" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.atmlscript" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.atmlscript",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.atmlscript",
+          "begin": "'",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.atmlscript" }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.atmlscript" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.atmlscript",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "atmlscript-keyword": {
+      "patterns": [
+        {
+          "name": "keyword.control.atmlscript",
+          "match": "\\b(actor|animate|draw|timeline|transition|on|stage|play|pause|reverse|loop|over|trigger|scene|key|tween|clip|camera|part|pixel)\\b"
+        },
+        {
+          "name": "keyword.other.atmlscript",
+          "match": "\\b(fps|ease|from|to|at|follow|morph|anchor)\\b"
+        }
+      ]
+    },
+    "atmlscript-easing": {
+      "name": "support.constant.easing.atmlscript",
+      "match": "\\b(linear|ease|ease-in|ease-out|ease-in-out|bounce|elastic|spring|smooth|step)\\b"
+    },
+    "atmlscript-number-unit": {
+      "patterns": [
+        {
+          "name": "constant.numeric.atmlscript",
+          "match": "\\b\\d+(?:\\.\\d+)?(?:s|ms|%|px|deg|fr)?\\b"
+        }
+      ]
+    },
+    "atmlscript-taglike": {
+      "name": "entity.name.tag.atmlscript",
+      "match": "\\b(atml|stage|scene|actor|part|draw|pixel|key|animate|tween|timeline|clip|transition|loop|trigger|camera|use)\\b(?=\\s*[\\.{#\\[])",
+      "comment": "Tag-like references in concise ATMLScript selectors"
+    }
+  }
+}

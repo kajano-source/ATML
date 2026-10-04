@@ -1,0 +1,68 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Compile check
+        run: |
+          python3 compiler/atmlc.py --version || true
+          mkdir -p dist
+          for f in examples/*.atml; do
+            [ -e "$f" ] || continue
+            python3 compiler/atmlc.py build "$f" -o "dist/$(basename "${f%.atml}.html")"
+          done
+
+      - name: Package VS Code extension (if available)
+        run: |
+          if [ -f vscode-atml/package.json ]; then
+            cd vscode-atml && npm ci || npm install
+            npx vsce package || echo "vsce packaging skipped"
+            cd ..
+          fi
+
+      - name: PyInstaller binary (optional, guarded)
+        run: |
+          if [ -f compiler/atmlc.py ]; then
+            pip install pyinstaller || echo "pyinstaller install failed, skipping"
+            pyinstaller --onefile --name atml compiler/atmlc.py || echo "pyinstaller build skipped"
+          fi
+
+      - name: Assemble Linux tarballs + Windows zip
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          mkdir -p pkg/atml-linux pkg/atml-win
+          cp -r compiler runtime examples atml README.md ATML_LANGUAGE_GUIDE.md LICENSE pkg/atml-linux/ 2>/dev/null || true
+          cp -r compiler runtime examples atml README.md ATML_LANGUAGE_GUIDE.md LICENSE pkg/atml-win/ 2>/dev/null || true
+          tar -czf "atml-${VER}-linux.tar.gz" -C pkg atml-linux
+          (cd pkg && zip -r "../atml-${VER}-win.zip" atml-win)
+          cp vscode-atml/*.vsix . 2>/dev/null || echo "no vsix, skipping"
+          ls -la *.tar.gz *.zip *.vsix 2>/dev/null || true
+
+      - name: Create GitHub Release with assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.tar.gz
+            *.zip
+            *.vsix
+
+      - name: AUR / PKGBUILD note
+        run: |
+          echo "To publish to AUR, copy installer/arch/PKGBUILD, bump pkgver to ${GITHUB_REF_NAME#v}, regenerate .SRCINFO (makepkg --printsrcinfo), and push to the aur/atml repo."

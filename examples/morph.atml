@@ -1,0 +1,13 @@
+<atml version="1.0" fps="60" width="800" height="600" title="Morph demo">
+<stage id="m" width="800" height="600" fps="60" background="#1e1b4b">
+  <scene id="s" dur="6s">
+    <actor id="blob" x="250" y="150" w="300" h="300" shape="path" fill="#c084fc">
+      <draw d="M 150 20 C 220 20 280 80 280 150 C 280 220 220 280 150 280 C 80 280 20 220 20 150 C 20 80 80 20 150 20 Z" morph="M 150 10 L 180 110 L 290 110 L 200 175 L 230 275 L 150 210 L 70 275 L 100 175 L 10 110 L 120 110 Z" fill="#c084fc"/>
+    </actor>
+    <animate target="blob" dur="3s" ease="ease-in-out" loop="infinite" direction="alternate">
+      <key at="0%" d="M 150 20 C 220 20 280 80 280 150 C 280 220 220 280 150 280 C 80 280 20 220 20 150 C 20 80 80 20 150 20 Z"/>
+      <key at="100%" d="M 150 10 L 180 110 L 290 110 L 200 175 L 230 275 L 150 210 L 70 275 L 100 175 L 10 110 L 120 110 Z"/>
+    </animate>
+  </scene>
+</stage>
+</atml>

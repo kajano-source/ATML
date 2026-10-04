@@ -1,0 +1,30 @@
+<atml version="1.0" fps="60" width="1000" height="400" title="FPS comparison">
+<stage id="fpsrow" width="1000" height="400" fps="60" background="#111827">
+  <scene id="s" dur="6s">
+    <actor id="spin12" x="60" y="120" w="120" h="120" shape="rect" fill="#f87171">
+      <rect x="0" y="0" width="120" height="120" fill="#f87171"/>
+    </actor>
+    <actor id="spin24" x="280" y="120" w="120" h="120" shape="rect" fill="#fbbf24">
+      <rect x="0" y="0" width="120" height="120" fill="#fbbf24"/>
+    </actor>
+    <actor id="spin60" x="500" y="120" w="120" h="120" shape="rect" fill="#34d399">
+      <rect x="0" y="0" width="120" height="120" fill="#34d399"/>
+    </actor>
+    <actor id="spin144" x="720" y="120" w="120" h="120" shape="rect" fill="#60a5fa">
+      <rect x="0" y="0" width="120" height="120" fill="#60a5fa"/>
+    </actor>
+    <animate target="spin12" dur="2s" fps="12" ease="linear" loop="infinite">
+      <key at="0%" rotate="0"/><key at="100%" rotate="360"/>
+    </animate>
+    <animate target="spin24" dur="2s" fps="24" ease="linear" loop="infinite">
+      <key at="0%" rotate="0"/><key at="100%" rotate="360"/>
+    </animate>
+    <animate target="spin60" dur="2s" fps="60" ease="linear" loop="infinite">
+      <key at="0%" rotate="0"/><key at="100%" rotate="360"/>
+    </animate>
+    <animate target="spin144" dur="2s" fps="144" ease="linear" loop="infinite">
+      <key at="0%" rotate="0"/><key at="100%" rotate="360"/>
+    </animate>
+  </scene>
+</stage>
+</atml>

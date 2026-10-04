@@ -1,0 +1,14 @@
+Package: atml
+Version: 1.0.0
+Section: devel
+Priority: optional
+Architecture: all
+Depends: python3
+Recommends: python3-tk
+Maintainer: ATML contributors <atml@example.com>
+Description: ATML template compiler CLI, HTML converter runtime, and editor support
+ Installs /usr/bin/atml, /usr/share/atml (compiler, runtime, examples,
+ syntaxes), a .atml MIME type and desktop entry.
+ .
+ Build with: dpkg-deb --build installer/debian atml_1.0.0_all.deb
+  (layout: installer/debian/DEBIAN/control, installer/debian/usr/...).

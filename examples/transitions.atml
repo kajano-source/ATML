@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>ATML Transitions</title></head>
+<body style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:24px;">
+<h1 a-fade="" a-dur="1s">Transitions with HTML sugar</h1>
+<p id="p1" a-slide="" a-dur="1.2s" a-ease="ease-out">Plain HTML elements animate with <code>a-*</code> attributes.</p>
+<div id="card" a-float="" a-dur="3s" a-loop="infinite" style="background:#eef;padding:16px;border-radius:8px;">Floating card</div>
+<button id="btn" a-bounce="" a-trigger="click" a-dur="0.8s">Bouncy button</button>
+<div id="spin" a-spin="" a-dur="4s" a-loop="infinite" style="width:60px;height:60px;background:#4da3ff;border-radius:50%;margin-top:16px;"></div>
+<div id="wig" a-wiggle="" a-dur="1s" a-loop="infinite" style="margin-top:16px;">Wiggling text</div>
+</body>
+</html>
