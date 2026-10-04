@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 — 2026-10-04
+
+- New command `atml.publish`: publish the active `.atml` file to `dist/` (index.html + assets).
+- Commands are now `atml.build` / `atml.preview` / `atml.publish`.
+
 ## 1.0.0 — 2026-10-04
 
 - Initial release of the ATML VS Code extension.

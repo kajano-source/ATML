@@ -99,6 +99,14 @@ function buildCommand(file: string, outFile: string): { cmd: string; args: strin
   return { cmd: compiler, args: ['build', file, '-o', outFile] };
 }
 
+function publishCommand(file: string, outDir: string): { cmd: string; args: string[] } {
+  const compiler = resolveCompilerPath();
+  if (compiler.endsWith('.py')) {
+    return { cmd: 'python3', args: [compiler, 'publish', file, '-o', outDir] };
+  }
+  return { cmd: compiler, args: ['publish', file, '-o', outDir] };
+}
+
 function runBuildProcess(cmd: string, args: string[], cwd: string): Promise<{ code: number; output: string }> {
   return new Promise((resolve) => {
     outputChannel.appendLine(`$ ${cmd} ${args.join(' ')}`);
@@ -183,6 +191,31 @@ async function buildActiveFile(returnHtmlPath = false): Promise<string | undefin
   return undefined;
 }
 
+async function publishActiveFile(): Promise<void> {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor || editor.document.languageId !== 'atml') {
+    void vscode.window.showWarningMessage('ATML: open an .atml file first.');
+    return;
+  }
+  const doc = editor.document;
+  await doc.save();
+  const file = doc.fileName;
+  const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
+    ?? path.dirname(file);
+  const outDir = path.join(path.dirname(file), 'dist');
+  const { cmd, args } = publishCommand(file, outDir);
+  outputChannel.show(true);
+  outputChannel.appendLine(`ATML publish: ${file} -> ${outDir}/`);
+  const result = await runBuildProcess(cmd, args, workspaceRoot);
+  const diags = parseDiagnostics(result.output);
+  diagnosticCollection.set(doc.uri, diags);
+  if (result.code === 0) {
+    void vscode.window.showInformationMessage('ATML: published to dist/ (index.html + assets).');
+  } else {
+    void vscode.window.showErrorMessage('ATML publish failed — see Output > ATML.');
+  }
+}
+
 async function previewActiveFile(): Promise<void> {
   const htmlPath = await buildActiveFile(true);
   if (!htmlPath) {
@@ -237,6 +270,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('atml.build', () => buildActiveFile(false)),
     vscode.commands.registerCommand('atml.preview', () => previewActiveFile()),
+    vscode.commands.registerCommand('atml.publish', () => publishActiveFile()),
     vscode.window.onDidChangeActiveTextEditor((e) => updateStatusBar(e)),
     vscode.workspace.onDidSaveTextDocument((doc) => {
       if (doc.languageId !== 'atml') {

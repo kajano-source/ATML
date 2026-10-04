@@ -109,6 +109,62 @@ class TestCompiler(unittest.TestCase):
             self.assertIn("compiled with ATML v1.0", out, name)
             self.assertIn("window.__ATML__", out, name)
 
+    def test_publish_single_page(self):
+        import shutil
+        import tempfile
+        from compiler.atmlc import main as atml_main
+        tmp = tempfile.mkdtemp(prefix="atml-pub-")
+        try:
+            src = os.path.join(tmp, "site.atml")
+            with open(src, "w", encoding="utf-8") as f:
+                f.write("<!DOCTYPE html><html><head><title>S</title></head>"
+                        "<body><p>Hi</p></body></html>")
+            outdir = os.path.join(tmp, "dist")
+            rc = atml_main(["publish", src, "-o", outdir])
+            self.assertEqual(rc, 0)
+            self.assertTrue(os.path.isfile(os.path.join(outdir, "index.html")))
+            self.assertTrue(os.path.isfile(os.path.join(outdir, ".nojekyll")))
+            with open(os.path.join(outdir, "index.html"), encoding="utf-8") as f:
+                self.assertIn("<p>Hi</p>", f.read())
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_publish_multi_page_assets_sitemap(self):
+        import shutil
+        import tempfile
+        from compiler.atmlc import main as atml_main
+        tmp = tempfile.mkdtemp(prefix="atml-pub2-")
+        try:
+            os.makedirs(os.path.join(tmp, "assets"))
+            with open(os.path.join(tmp, "assets", "logo.svg"), "w") as f:
+                f.write("<svg></svg>")
+            for name in ("index.atml", "about.atml"):
+                with open(os.path.join(tmp, name), "w", encoding="utf-8") as f:
+                    f.write('<!DOCTYPE html><html><head><title>%s</title></head>'
+                            '<body><img src="assets/logo.svg"/></body></html>' % name)
+            outdir = os.path.join(tmp, "dist")
+            rc = atml_main(["publish", os.path.join(tmp, "index.atml"),
+                            os.path.join(tmp, "about.atml"),
+                            "-o", outdir, "--base", "/myrepo/"])
+            self.assertEqual(rc, 0)
+            self.assertTrue(os.path.isfile(os.path.join(outdir, "index.html")))
+            self.assertTrue(os.path.isfile(os.path.join(outdir, "about.html")))
+            self.assertTrue(os.path.isfile(
+                os.path.join(outdir, "assets", "logo.svg")))
+            self.assertTrue(os.path.isfile(os.path.join(outdir, "sitemap.xml")))
+            with open(os.path.join(outdir, "index.html"), encoding="utf-8") as f:
+                body = f.read()
+            self.assertIn("/myrepo/assets/logo.svg", body)
+
+            bad = os.path.join(tmp, "bad.atml")
+            with open(bad, "w", encoding="utf-8") as f:
+                f.write('<!DOCTYPE html><html><body>'
+                        '<img src="assets/nope.png"/></body></html>')
+            rc = atml_main(["publish", bad, "-o", os.path.join(tmp, "dist2")])
+            self.assertEqual(rc, 1)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
 
 if __name__ == "__main__":
     unittest.main()

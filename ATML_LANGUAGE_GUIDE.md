@@ -2149,6 +2149,13 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.1.0 — 2026-10-04
+
+- `publish` is now implemented in the compiler (previously spec-only): multi-page
+  `IN.atml [...] -o DIST/ [--base] [--minify] [--fps]`, local asset copy with
+  `ATML0012` on missing files, `.nojekyll`, `sitemap.xml` for multi-page.
+- VS Code extension: new `ATML: Publish Site to dist/` command (`atml.publish`).
+
 ## 1.0.0 — 2026-10-04 (initial public release)
 
 - Language: `<atml>/<stage>/<scene>/<actor>` + full geometry set (`rect circle ellipse
@@ -2166,7 +2173,7 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 - Compatibility promise: every `version="1.0.0"` file builds on all future 1.x compilers.
 
 ---
-*End of ATML Language Guide v1.0.0. Happy animating.*
+*End of ATML Language Guide v1.1.0. Happy animating.*
 ---
 # AppG — Runnable gallery (10 end-to-end scenes)
 

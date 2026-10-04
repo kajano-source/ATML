@@ -1083,6 +1083,76 @@ def cmd_build(args):
     return 0
 
 
+def cmd_publish(args):
+    import shutil
+    outdir = args.o
+    if not outdir:
+        print("atml publish: missing -o DIST/ (output directory)", file=sys.stderr)
+        return 1
+    os.makedirs(outdir, exist_ok=True)
+    base = (args.base or "/")
+    if not base.endswith("/"):
+        base += "/"
+    pages = []
+    for inp in args.inputs:
+        with open(inp, "r", encoding="utf-8") as f:
+            src = f.read()
+        try:
+            html = compile_atml(src, filename=inp, fps=args.fps,
+                                title=args.title if len(args.inputs) == 1 else None)
+        except ValueError as e:
+            print(str(e), file=sys.stderr)
+            return 1
+        if args.minify:
+            html = re.sub(r">\s+<", "><", html)
+            html = re.sub(r"\n\s*", "\n", html)
+        srcdir = os.path.dirname(os.path.abspath(inp)) or os.getcwd()
+        refs = re.findall(r'''(?:src|href)\s*=\s*"([^"]+)"''', html)
+        refs += re.findall(r"""(?:src|href)\s*=\s*'([^']+)'""", html)
+        for ref in sorted(set(refs)):
+            if re.match(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//|#|/)", ref):
+                continue  # absolute URL, protocol-relative, anchor, or root path: untouched
+            clean = ref.split("?", 1)[0].split("#", 1)[0]
+            fsrc = os.path.normpath(os.path.join(srcdir, clean))
+            if not os.path.isfile(fsrc):
+                print("%s: ATML0012 Asset not found: %s" % (inp, clean),
+                      file=sys.stderr)
+                return 1
+            fdst = os.path.normpath(os.path.join(outdir, clean))
+            os.makedirs(os.path.dirname(fdst) or outdir, exist_ok=True)
+            shutil.copy2(fsrc, fdst)
+            html = html.replace('"' + ref + '"', '"' + base + clean + '"')
+            html = html.replace("'" + ref + "'", "'" + base + clean + "'")
+        adir = os.path.join(srcdir, "assets")
+        if os.path.isdir(adir):
+            for root, _dirs, files in os.walk(adir):
+                for fn in files:
+                    fsrc = os.path.join(root, fn)
+                    rel = os.path.relpath(fsrc, srcdir)
+                    fdst = os.path.join(outdir, rel)
+                    os.makedirs(os.path.dirname(fdst), exist_ok=True)
+                    shutil.copy2(fsrc, fdst)
+        leaf = os.path.splitext(os.path.basename(inp))[0] + ".html"
+        outname = "index.html" if len(args.inputs) == 1 else leaf
+        with open(os.path.join(outdir, outname), "w", encoding="utf-8") as f:
+            f.write(html)
+        pages.append(outname)
+        print("published %s -> %s" % (inp, os.path.join(outdir, outname)))
+    with open(os.path.join(outdir, ".nojekyll"), "w", encoding="utf-8") as f:
+        f.write("")
+    if len(pages) > 1:
+        sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+        for p in pages:
+            sm.append("  <url><loc>%s%s</loc></url>" % (base, p))
+        sm.append("</urlset>")
+        with open(os.path.join(outdir, "sitemap.xml"), "w", encoding="utf-8") as f:
+            f.write("\n".join(sm) + "\n")
+        print("wrote %s" % os.path.join(outdir, "sitemap.xml"))
+    print("publish complete: %d page(s) in %s/" % (len(pages), outdir))
+    return 0
+
+
 def cmd_serve(path, port):
     import http.server
     import functools
@@ -1129,6 +1199,13 @@ def main(argv=None):
     s = sub.add_parser("serve", help="serve compiled .atml locally")
     s.add_argument("input")
     s.add_argument("--port", type=int, default=8000)
+    p = sub.add_parser("publish", help="build + stage a deployable static site dir")
+    p.add_argument("inputs", nargs="+", help="one or more input .atml files")
+    p.add_argument("-o", default=None, help="output directory (e.g. dist/)")
+    p.add_argument("--base", default="/", help="sub-path hosting base (e.g. /myrepo/)")
+    p.add_argument("--minify", action="store_true")
+    p.add_argument("--fps", type=float, default=None)
+    p.add_argument("--title", default=None)
     args = ap.parse_args(argv)
     if args.cmd == "build":
         return cmd_build(args)
@@ -1138,6 +1215,8 @@ def main(argv=None):
         return cmd_new(args.name)
     if args.cmd == "serve":
         return cmd_serve(args.input, args.port)
+    if args.cmd == "publish":
+        return cmd_publish(args)
     ap.print_help()
     return 2
 
