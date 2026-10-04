@@ -2161,6 +2161,11 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.4.1 — 2026-10-05
+
+- Install docs: new `INSTALL.md` (git clone or AUR `yay -S atml`).
+- Arch: AUR-ready `PKGBUILD` + `.SRCINFO` published as package `atml`.
+
 ## 1.4.0 — 2026-10-05
 
 - CLI: `atml --version`; `atml check` accepts multiple files and directories.

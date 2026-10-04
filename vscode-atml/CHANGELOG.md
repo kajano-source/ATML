@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1 — 2026-10-05
+
+- New: `INSTALL.md` — install via `git clone` or the AUR (`yay -S atml`).
+- New: AUR-ready `installer/arch/PKGBUILD` + `.SRCINFO` (source: GitHub
+  release tarball, published as `atml`).
+
 ## 1.4.0 — 2026-10-05
 
 - New: `atml --version` prints the compiler version; `atml check` accepts

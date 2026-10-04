@@ -1,4 +1,4 @@
-"""ATML compiler v1.4.0 -- Python stdlib only."""
+"""ATML compiler v1.4.1 -- Python stdlib only."""
 import argparse
 import html as htmlmod
 import json
@@ -7,7 +7,7 @@ import re
 import sys
 from html.parser import HTMLParser
 
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 ATML_TAGS = {"atml", "stage", "scene", "actor", "animate", "timeline", "clip",
              "transition", "trigger", "camera", "loop", "key", "tween", "draw",
              "pixel", "part"}
@@ -1036,7 +1036,7 @@ def compile_file(path, out=None, fps=None, title=None, minify=False):
     return html
 
 
-SCAFFOLD = """<atml version="1.4.0" fps="60" width="800" height="600" title="%(name)s">
+SCAFFOLD = """<atml version="1.4.1" fps="60" width="800" height="600" title="%(name)s">
 <stage id="main" width="800" height="600" fps="60" background="#111827">
   <scene id="intro" dur="4s">
     <actor id="box" x="100" y="100" w="120" h="120" shape="rect" fill="#4da3ff">

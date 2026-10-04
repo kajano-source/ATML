@@ -13,7 +13,7 @@ python3 compiler/atmlc.py build hello.atml -o hello.html
 ./atml build hello.atml -o hello.html
 ```
 
-> Version **1.4.0** · Extension id **`atml`** · License **MIT** ·
+> Version **1.4.1** · Extension id **`atml`** · License **MIT** ·
 > Full manual: [`ATML_LANGUAGE_GUIDE.md`](ATML_LANGUAGE_GUIDE.md)
 
 ---
@@ -23,7 +23,7 @@ python3 compiler/atmlc.py build hello.atml -o hello.html
 Save this as `ball.atml`:
 
 ```atml
-<atml version="1.4.0" title="Bouncing Ball">
+<atml version="1.4.1" title="Bouncing Ball">
   <stage width="800" height="600" fps="60" bg="#0b1020">
     <scene id="main" dur="2s" bg="#0b1020">
       <!-- ground -->
@@ -177,9 +177,9 @@ Requires **Python 3.9+**. No other dependency.
 | OS | One-liner |
 |---|---|
 | Arch Linux (AUR) | `yay -S atml` (see `installer/arch/PKGBUILD`) |
-| Debian / Ubuntu | `sudo dpkg -i atml_1.4.0_amd64.deb` (see `installer/debian/`) |
-| Fedora | `sudo rpm -i atml-1.4.0-1.noarch.rpm` (see `installer/fedora/atml.spec`) |
-| Windows | Download `atml-1.4.0-win.zip`, unzip, run `atml.exe build …` (see `installer/windows/`) |
+| Debian / Ubuntu | `sudo dpkg -i atml_1.4.1_amd64.deb` (see `installer/debian/`) |
+| Fedora | `sudo rpm -i atml-1.4.1-1.noarch.rpm` (see `installer/fedora/atml.spec`) |
+| Windows | Download `atml-1.4.1-win.zip`, unzip, run `atml.exe build …` (see `installer/windows/`) |
 | Any OS (source) | `git clone … && cd atml && chmod +x atml && ./atml check examples/` |
 
 Verify: `./atml --help` prints the `ATML compiler v1.0` banner and subcommands.
@@ -190,13 +190,13 @@ Verify: `./atml --help` prints the `ATML compiler v1.0` banner and subcommands.
 
 ### VS Code
 
-1. Install the **`atml`** extension (`vscode-atml/`, version 1.4.0): syntax highlight,
+1. Install the **`atml`** extension (`vscode-atml/`, version 1.4.1): syntax highlight,
    snippets (`atml-stage`, `atml-actor`, `atml-key`…), `build` task, live preview.
-2. From source: `cd vscode-atml && npm install && npx vsce package && code --install-extension atml-1.4.0.vsix`.
+2. From source: `cd vscode-atml && npm install && npx vsce package && code --install-extension atml-1.4.1.vsix`.
 
 ### Cursor
 
-Cursor is VS Code-compatible — install the same `atml-1.4.0.vsix`
+Cursor is VS Code-compatible — install the same `atml-1.4.1.vsix`
 (`Extensions → … → Install from VSIX`). `.atml` files get highlighting + completions.
 Add a `.cursor/rules` line so Cursor treats `.atml` as XML-ish ATML, not raw HTML.
 
@@ -208,7 +208,7 @@ Point an External Tool at `python3 compiler/atmlc.py build $FilePath$ -o $FileDi
 
 ### Devin
 
-Give Devin this repo + the prompt: *"ATML 1.4.0. Compile with
+Give Devin this repo + the prompt: *"ATML 1.4.1. Compile with
 `python3 compiler/atmlc.py build <file>.atml -o out.html`. Spec is
 `ATML_LANGUAGE_GUIDE.md`. Keep edits to `.atml`/docs; do not touch the compiler
 unless asked."* It can build, check, and publish sites headlessly.
@@ -270,7 +270,7 @@ Run them all: `./atml check examples/ && for f in examples/*.atml; do ./atml bui
 
 ## Versioning
 
-SemVer. Current **1.4.0**. The language version is pinned per file
+SemVer. Current **1.4.1**. The language version is pinned per file
 (`<atml version="1.0">`); the 1.x compiler accepts `1.0` files and warns on
 `0.x`/future `2.x`. Policy + changelog: Guide Ch28 / AppF.
 

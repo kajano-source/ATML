@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ATML 1.4.0 uninstaller for Linux/macOS. Removes what the installer installed.
+# ATML 1.4.1 uninstaller for Linux/macOS. Removes what the installer installed.
 set -euo pipefail
 PREFIX="${PREFIX:-$HOME/.local}"
 SHARE="$PREFIX/share/atml"

@@ -1,27 +1,25 @@
-# Maintainer: ATML contributors
+# Maintainer: ATML contributors <atml@example.com>
 pkgname=atml
-pkgver=1.4.0
+pkgver=1.4.1
 pkgrel=1
-pkgdesc="ATML template compiler CLI, HTML converter runtime, and editor support"
+pkgdesc="Animation & Transition Markup Language — .atml to .html compiler, runtime and editor support"
 arch=('any')
-url="https://example.com/atml"
+url="https://github.com/kajano-source/ATML"
 license=('MIT')
 depends=('python')
 optdepends=('tk: GUI installer'
             'code: VS Code integration (or cursor for Cursor)')
-source=()
-sha256sums=()
+source=("https://github.com/kajano-source/ATML/releases/download/v$pkgver/atml-$pkgver-linux.tar.gz")
+sha256sums=('REPLACE_WITH_RELEASE_TARBALL_SHA256')
 
 package() {
-  local root="$startdir/../.."
-  [ -d "$root/compiler" ] || root="$srcdir/.."
+  local src="$srcdir/atml-linux"
   install -dm755 "$pkgdir/usr/bin" "$pkgdir/usr/share/atml" \
-    "$pkgdir/usr/share/applications" "$pkgdir/usr/share/mime/packages" \
-    "$pkgdir/usr/share/icons/hicolor/scalable/mimetypes"
+    "$pkgdir/usr/share/applications" "$pkgdir/usr/share/mime/packages"
 
-  for d in compiler runtime examples vscode-atml; do
-    if [ -d "$root/$d" ]; then
-      cp -r "$root/$d" "$pkgdir/usr/share/atml/$d"
+  for d in compiler runtime examples; do
+    if [ -d "$src/$d" ]; then
+      cp -r "$src/$d" "$pkgdir/usr/share/atml/$d"
     fi
   done
 
@@ -31,18 +29,24 @@ package() {
 if [ -f /usr/share/atml/compiler/atmlc.py ]; then
   exec python3 /usr/share/atml/compiler/atmlc.py "$@"
 else
-  echo "ATML 1.4.0 (/usr/share/atml)" >&2
+  echo "ATML (/usr/share/atml)" >&2
   ls /usr/share/atml >&2
 fi
 EOF
   chmod 755 "$pkgdir/usr/bin/atml"
 
-  # GUI + CLI installers (also usable post-install).
-  install -Dm644 "$root/installer/gui_installer.py" "$pkgdir/usr/share/atml/installer/gui_installer.py"
-  install -Dm644 "$root/installer/cli_install.py" "$pkgdir/usr/share/atml/installer/cli_install.py"
-
   # Desktop file + MIME registration.
-  install -Dm644 "$srcdir/../atml.desktop" "$pkgdir/usr/share/applications/atml.desktop"
+  cat > "$pkgdir/usr/share/applications/atml.desktop" <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=ATML
+Comment=ATML template compiler
+Exec=/usr/bin/atml %f
+Icon=text-html
+MimeType=text/html-atml;
+Categories=Development;TextEditor;
+Terminal=true
+EOF
   cat > "$pkgdir/usr/share/mime/packages/atml.xml" <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
