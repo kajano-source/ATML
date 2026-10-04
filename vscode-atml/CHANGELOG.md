@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 — 2026-10-04
+
+- New command `atml.run`: builds `dist/` output and opens it with the OS default
+  browser (`xdg-open` / `open` / `start`).
+
 ## 1.1.2 — 2026-10-04
 
 - Fix: installer shims pointed at `compiler/atml.py`; corrected to `compiler/atmlc.py`

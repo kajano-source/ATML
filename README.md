@@ -13,7 +13,7 @@ python3 compiler/atmlc.py build hello.atml -o hello.html
 ./atml build hello.atml -o hello.html
 ```
 
-> Version **1.1.2** · Extension id **`atml`** · License **MIT** ·
+> Version **1.2.0** · Extension id **`atml`** · License **MIT** ·
 > Full manual: [`ATML_LANGUAGE_GUIDE.md`](ATML_LANGUAGE_GUIDE.md)
 
 ---
@@ -23,7 +23,7 @@ python3 compiler/atmlc.py build hello.atml -o hello.html
 Save this as `ball.atml`:
 
 ```atml
-<atml version="1.1.2" title="Bouncing Ball">
+<atml version="1.2.0" title="Bouncing Ball">
   <stage width="800" height="600" fps="60" bg="#0b1020">
     <scene id="main" dur="2s" bg="#0b1020">
       <!-- ground -->
@@ -83,7 +83,7 @@ by hand. Change `fps`, tweak a `<key>`, rebuild. That is the whole loop.
 | Camera | Pan / zoom / follow / shake with `<camera>` |
 | HTML interop | Any HTML passes through; migrate one `<div>` at a time |
 | One-file output | Zero dependencies, works from `file://`, embeddable, emailable |
-| Tooling | `build check new serve publish`, VS Code / Cursor / JetBrains / Devin support |
+| Tooling | `build check new serve publish run`, VS Code / Cursor / JetBrains / Devin support |
 
 ---
 
@@ -177,9 +177,9 @@ Requires **Python 3.9+**. No other dependency.
 | OS | One-liner |
 |---|---|
 | Arch Linux (AUR) | `yay -S atml` (see `installer/arch/PKGBUILD`) |
-| Debian / Ubuntu | `sudo dpkg -i atml_1.1.2_amd64.deb` (see `installer/debian/`) |
-| Fedora | `sudo rpm -i atml-1.1.2-1.noarch.rpm` (see `installer/fedora/atml.spec`) |
-| Windows | Download `atml-1.1.2-win.zip`, unzip, run `atml.exe build …` (see `installer/windows/`) |
+| Debian / Ubuntu | `sudo dpkg -i atml_1.2.0_amd64.deb` (see `installer/debian/`) |
+| Fedora | `sudo rpm -i atml-1.2.0-1.noarch.rpm` (see `installer/fedora/atml.spec`) |
+| Windows | Download `atml-1.2.0-win.zip`, unzip, run `atml.exe build …` (see `installer/windows/`) |
 | Any OS (source) | `git clone … && cd atml && chmod +x atml && ./atml check examples/` |
 
 Verify: `./atml --help` prints the `ATML compiler v1.0` banner and subcommands.
@@ -190,13 +190,13 @@ Verify: `./atml --help` prints the `ATML compiler v1.0` banner and subcommands.
 
 ### VS Code
 
-1. Install the **`atml`** extension (`vscode-atml/`, version 1.1.2): syntax highlight,
+1. Install the **`atml`** extension (`vscode-atml/`, version 1.2.0): syntax highlight,
    snippets (`atml-stage`, `atml-actor`, `atml-key`…), `build` task, live preview.
-2. From source: `cd vscode-atml && npm install && npx vsce package && code --install-extension atml-1.1.2.vsix`.
+2. From source: `cd vscode-atml && npm install && npx vsce package && code --install-extension atml-1.2.0.vsix`.
 
 ### Cursor
 
-Cursor is VS Code-compatible — install the same `atml-1.1.2.vsix`
+Cursor is VS Code-compatible — install the same `atml-1.2.0.vsix`
 (`Extensions → … → Install from VSIX`). `.atml` files get highlighting + completions.
 Add a `.cursor/rules` line so Cursor treats `.atml` as XML-ish ATML, not raw HTML.
 
@@ -208,7 +208,7 @@ Point an External Tool at `python3 compiler/atmlc.py build $FilePath$ -o $FileDi
 
 ### Devin
 
-Give Devin this repo + the prompt: *"ATML 1.1.2. Compile with
+Give Devin this repo + the prompt: *"ATML 1.2.0. Compile with
 `python3 compiler/atmlc.py build <file>.atml -o out.html`. Spec is
 `ATML_LANGUAGE_GUIDE.md`. Keep edits to `.atml`/docs; do not touch the compiler
 unless asked."* It can build, check, and publish sites headlessly.
@@ -226,6 +226,7 @@ CLI is `python3 compiler/atmlc.py` (shim `./atml`).
 | `new` | `./atml new mysite --template site\|ball\|dog\|empty` | Scaffold a starter file |
 | `serve` | `./atml serve --port 8000 --dir .` | Local preview server with live rebuild |
 | `publish` | `./atml publish a.atml [b.atml …] -o dist/ [--base /] [--minify]` | Build + copy assets + sitemap for static hosting |
+| `run` | `./atml run in.atml [--out DIR] [--no-browser]` | Compile + open in your default browser |
 
 Exit codes: `0` ok · `1` usage/CLI error · `2` compile error · `3` validation error.
 Full flags: Guide Ch23.
@@ -269,7 +270,7 @@ Run them all: `./atml check examples/ && for f in examples/*.atml; do ./atml bui
 
 ## Versioning
 
-SemVer. Current **1.1.2**. The language version is pinned per file
+SemVer. Current **1.2.0**. The language version is pinned per file
 (`<atml version="1.0">`); the 1.x compiler accepts `1.0` files and warns on
 `0.x`/future `2.x`. Policy + changelog: Guide Ch28 / AppF.
 

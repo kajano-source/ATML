@@ -12,6 +12,8 @@ Language support for **ATML (Animation Text Markup Language)** `.atml` files.
 - Commands:
   - **ATML: Build to HTML** (`atml.build`, default keybinding `Ctrl+Shift+B`)
   - **ATML: Preview Animation** (`atml.preview` — Simple Browser, or embedded webview fallback)
+  - **ATML: Publish Site to dist/** (`atml.publish`)
+  - **ATML: Run in Browser** (`atml.run` — builds to `dist/` and opens your default browser)
 - Hover docs for ATML tags / attributes / easings.
 - Completions for tags, attributes, and `ease` / `shape` values.
 - Pass-through formatter (trims trailing whitespace; preserves semantics).
@@ -25,7 +27,7 @@ Language support for **ATML (Animation Text Markup Language)** `.atml` files.
 ### From `.vsix`
 
 ```sh
-code --install-extension atml-1.1.2.vsix
+code --install-extension atml-1.2.0.vsix
 ```
 
 ### From source

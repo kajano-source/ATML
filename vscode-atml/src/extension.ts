@@ -216,6 +216,28 @@ async function publishActiveFile(): Promise<void> {
   }
 }
 
+async function runInBrowser(): Promise<void> {
+  const htmlPath = await buildActiveFile(true);
+  if (!htmlPath) {
+    return;
+  }
+  outputChannel.appendLine(`ATML run in browser: ${htmlPath}`);
+  const opener = process.platform === 'win32'
+    ? { cmd: 'cmd', args: ['/c', 'start', '', htmlPath] }
+    : process.platform === 'darwin'
+      ? { cmd: 'open', args: [htmlPath] }
+      : { cmd: 'xdg-open', args: [htmlPath] };
+  const { execFile } = await import('node:child_process');
+  execFile(opener.cmd, opener.args, (err) => {
+    if (err) {
+      void vscode.window.showErrorMessage(
+        `ATML: could not open a browser (${err.message}). File is at ${htmlPath}`);
+      return;
+    }
+    void vscode.window.showInformationMessage('ATML: opened in your browser.');
+  });
+}
+
 async function previewActiveFile(): Promise<void> {
   const htmlPath = await buildActiveFile(true);
   if (!htmlPath) {
@@ -271,6 +293,7 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand('atml.build', () => buildActiveFile(false)),
     vscode.commands.registerCommand('atml.preview', () => previewActiveFile()),
     vscode.commands.registerCommand('atml.publish', () => publishActiveFile()),
+    vscode.commands.registerCommand('atml.run', () => runInBrowser()),
     vscode.window.onDidChangeActiveTextEditor((e) => updateStatusBar(e)),
     vscode.workspace.onDidSaveTextDocument((doc) => {
       if (doc.languageId !== 'atml') {

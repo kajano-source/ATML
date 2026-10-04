@@ -1480,7 +1480,19 @@ Prints ATMLxxxx diagnostics with file:line:col, one per line.
 ./atml publish IN.atml [MORE.atml ...] -o DIST/ [--base /] [--minify]
 ```
 
-## 23.6 Exit codes
+## 23.6 `run`
+
+```text
+./atml run IN.atml [--out DIR] [--fps N] [--title T] [--minify] [--no-browser]
+```
+
+Compiles one file, stages it with its local assets, and opens it in your
+default browser (`file://…/index.html`). Default stage dir is a fresh temp
+dir; pass `--out dist/` to keep it. `--no-browser` stages without launching
+(anything scripted/CI/headless). In VS Code the same flow is
+`ATML: Run in Browser` (`atml.run`, builds to `dist/` first).
+
+## 23.7 Exit codes
 
 | Code | Meaning | Example |
 |---|---|---|
@@ -1489,7 +1501,7 @@ Prints ATMLxxxx diagnostics with file:line:col, one per line.
 | 2 | compile error | `ATML00xx` fatal, no output written |
 | 3 | validation error | `check` found diagnostics |
 
-## 23.7 `--help` (version banner)
+## 23.8 `--help` (version banner)
 
 ```bash
 ./atml --help        # prints the `ATML compiler v1.0` banner + subcommand list
@@ -2148,6 +2160,12 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 
 ---
 # AppF — Changelog
+
+## 1.2.0 — 2026-10-04
+
+- New `run` subcommand: compile + stage + open in the default browser
+  (`--out`, `--no-browser`); VS Code `ATML: Run in Browser` (`atml.run`).
+- Guide Ch23 gains `23.6 run` (`--help` moves to 23.8).
 
 ## 1.1.2 — 2026-10-04
 

@@ -125,6 +125,28 @@ class TestCompiler(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_run_stages_runnable_page(self):
+        import shutil
+        import tempfile
+        from compiler.atmlc import main as atml_main
+        tmp = tempfile.mkdtemp(prefix="atml-run-")
+        try:
+            src = os.path.join(tmp, "r.atml")
+            with open(src, "w", encoding="utf-8") as f:
+                f.write("<!DOCTYPE html><html><head><title>R</title></head>"
+                        "<body><p>Run me</p></body></html>")
+            outdir = os.path.join(tmp, "stage")
+            rc = atml_main(["run", src, "--out", outdir, "--no-browser"])
+            self.assertEqual(rc, 0)
+            page = os.path.join(outdir, "index.html")
+            self.assertTrue(os.path.isfile(page))
+            with open(page, encoding="utf-8") as f:
+                body = f.read()
+            self.assertIn("<p>Run me</p>", body)
+            self.assertIn("window.__ATML__", body)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_publish_single_page(self):
         import shutil
         import tempfile

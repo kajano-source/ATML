@@ -2,7 +2,7 @@
   "name": "atml",
   "displayName": "ATML",
   "description": "Language support for ATML (Animation Text Markup Language) — syntax highlighting, snippets, build, preview, hover docs and completions.",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "publisher": "atml-lang",
   "license": "MIT",
   "repository": {
@@ -66,6 +66,10 @@
       {
         "command": "atml.publish",
         "title": "ATML: Publish Site to dist/"
+      },
+      {
+        "command": "atml.run",
+        "title": "ATML: Run in Browser"
       }
     ],
     "keybindings": [

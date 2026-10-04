@@ -1086,6 +1086,45 @@ def cmd_build(args):
     return 0
 
 
+def _minify_html(html):
+    html = re.sub(r">\s+<", "><", html)
+    return re.sub(r"\n\s*", "\n", html)
+
+
+def _stage_assets(html, inp, srcdir, outdir, base=None):
+    """Copy local src/href assets + assets/ dir into outdir.
+
+    When base is given, rewrite relative refs to base + path (publish mode).
+    Returns (rewritten_html, error_string_or_None). Missing file -> ATML0012.
+    """
+    import shutil
+    refs = re.findall(r'''(?:src|href)\s*=\s*"([^"]+)"''', html)
+    refs += re.findall(r"""(?:src|href)\s*=\s*'([^']+)'""", html)
+    for ref in sorted(set(refs)):
+        if re.match(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//|#|/)", ref):
+            continue  # absolute URL, protocol-relative, anchor, or root path: untouched
+        clean = ref.split("?", 1)[0].split("#", 1)[0]
+        fsrc = os.path.normpath(os.path.join(srcdir, clean))
+        if not os.path.isfile(fsrc):
+            return html, "%s: ATML0012 Asset not found: %s" % (inp, clean)
+        fdst = os.path.normpath(os.path.join(outdir, clean))
+        os.makedirs(os.path.dirname(fdst) or outdir, exist_ok=True)
+        shutil.copy2(fsrc, fdst)
+        if base is not None:
+            html = html.replace('"' + ref + '"', '"' + base + clean + '"')
+            html = html.replace("'" + ref + "'", "'" + base + clean + "'")
+    adir = os.path.join(srcdir, "assets")
+    if os.path.isdir(adir):
+        for root, _dirs, files in os.walk(adir):
+            for fn in files:
+                fsrc = os.path.join(root, fn)
+                rel = os.path.relpath(fsrc, srcdir)
+                fdst = os.path.join(outdir, rel)
+                os.makedirs(os.path.dirname(fdst), exist_ok=True)
+                shutil.copy2(fsrc, fdst)
+    return html, None
+
+
 def cmd_publish(args):
     import shutil
     outdir = args.o
@@ -1107,34 +1146,12 @@ def cmd_publish(args):
             print(str(e), file=sys.stderr)
             return 1
         if args.minify:
-            html = re.sub(r">\s+<", "><", html)
-            html = re.sub(r"\n\s*", "\n", html)
+            html = _minify_html(html)
         srcdir = os.path.dirname(os.path.abspath(inp)) or os.getcwd()
-        refs = re.findall(r'''(?:src|href)\s*=\s*"([^"]+)"''', html)
-        refs += re.findall(r"""(?:src|href)\s*=\s*'([^']+)'""", html)
-        for ref in sorted(set(refs)):
-            if re.match(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//|#|/)", ref):
-                continue  # absolute URL, protocol-relative, anchor, or root path: untouched
-            clean = ref.split("?", 1)[0].split("#", 1)[0]
-            fsrc = os.path.normpath(os.path.join(srcdir, clean))
-            if not os.path.isfile(fsrc):
-                print("%s: ATML0012 Asset not found: %s" % (inp, clean),
-                      file=sys.stderr)
-                return 1
-            fdst = os.path.normpath(os.path.join(outdir, clean))
-            os.makedirs(os.path.dirname(fdst) or outdir, exist_ok=True)
-            shutil.copy2(fsrc, fdst)
-            html = html.replace('"' + ref + '"', '"' + base + clean + '"')
-            html = html.replace("'" + ref + "'", "'" + base + clean + "'")
-        adir = os.path.join(srcdir, "assets")
-        if os.path.isdir(adir):
-            for root, _dirs, files in os.walk(adir):
-                for fn in files:
-                    fsrc = os.path.join(root, fn)
-                    rel = os.path.relpath(fsrc, srcdir)
-                    fdst = os.path.join(outdir, rel)
-                    os.makedirs(os.path.dirname(fdst), exist_ok=True)
-                    shutil.copy2(fsrc, fdst)
+        html, err = _stage_assets(html, inp, srcdir, outdir, base)
+        if err:
+            print(err, file=sys.stderr)
+            return 1
         leaf = os.path.splitext(os.path.basename(inp))[0] + ".html"
         outname = "index.html" if len(args.inputs) == 1 else leaf
         with open(os.path.join(outdir, outname), "w", encoding="utf-8") as f:
@@ -1186,6 +1203,46 @@ def cmd_serve(path, port):
     return 0
 
 
+def cmd_run(args):
+    import tempfile
+    import webbrowser
+    inp = args.input
+    with open(inp, "r", encoding="utf-8") as f:
+        src = f.read()
+    try:
+        html = compile_atml(src, filename=inp, fps=args.fps, title=args.title)
+    except ValueError as e:
+        print(str(e), file=sys.stderr)
+        return 1
+    if args.minify:
+        html = _minify_html(html)
+    outdir = args.out or tempfile.mkdtemp(prefix="atml-run-")
+    os.makedirs(outdir, exist_ok=True)
+    srcdir = os.path.dirname(os.path.abspath(inp)) or os.getcwd()
+    html, err = _stage_assets(html, inp, srcdir, outdir)
+    if err:
+        print(err, file=sys.stderr)
+        return 1
+    out = os.path.join(outdir, "index.html")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(html)
+    url = "file://" + out
+    print("running %s -> %s" % (inp, out))
+    if args.no_browser:
+        print("(browser launch skipped: --no-browser)")
+        return 0
+    try:
+        opened = webbrowser.open(url)
+    except Exception as e:  # noqa: BLE001 - browser launch is best-effort
+        print("could not open browser (%s); open manually: %s" % (e, out))
+        return 0
+    if opened:
+        print("opened in browser: %s" % url)
+    else:
+        print("no browser found; open manually: %s" % out)
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="atmlc", description="ATML compiler v1.0")
     sub = ap.add_subparsers(dest="cmd")
@@ -1209,6 +1266,14 @@ def main(argv=None):
     p.add_argument("--minify", action="store_true")
     p.add_argument("--fps", type=float, default=None)
     p.add_argument("--title", default=None)
+    r = sub.add_parser("run", help="compile .atml and open it in your browser")
+    r.add_argument("input", help="input .atml file")
+    r.add_argument("--out", default=None, help="output dir (default: fresh temp dir)")
+    r.add_argument("--minify", action="store_true")
+    r.add_argument("--fps", type=float, default=None)
+    r.add_argument("--title", default=None)
+    r.add_argument("--no-browser", action="store_true",
+                   help="compile + stage only, do not launch a browser")
     args = ap.parse_args(argv)
     if args.cmd == "build":
         return cmd_build(args)
@@ -1220,6 +1285,8 @@ def main(argv=None):
         return cmd_serve(args.input, args.port)
     if args.cmd == "publish":
         return cmd_publish(args)
+    if args.cmd == "run":
+        return cmd_run(args)
     ap.print_help()
     return 2
 
