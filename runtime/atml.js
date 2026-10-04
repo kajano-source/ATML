@@ -12,7 +12,7 @@
 
   var ATML = {};
   var store = { animations: {}, timelines: {}, triggers: [] };
-  var state = {}; // id -> {el, anim, playing, startTime, pausedAt, reversed, raf, waapi}
+  var state = {}; // id -> {el, anim, playing, startTime, pausedAt, reversed, raf}
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -313,8 +313,10 @@
     var direction = anim.direction || 'normal';
     var start = performance.now() + delay;
     st.playing = true; st.start = start; st.pausedAt = null;
-    // Try WAAPI for simple CSS-only animations (best effort)
-    if (stops.length >= 2 && canUseWaapi(stops) && !loops) { tryWaapi(st, stops, dur, easeFn, fps); }
+    // NOTE: no WAAPI fast-path. A previous revision fired element.animate()
+    // with a hand-built `translate` property here; the malformed values stacked
+    // with the rAF-driven style.transform and displaced actors by hundreds of
+    // px. The rAF loop below is the single source of truth.
     function frame(now) {
       if (!st.playing) return;
       var raw = now - st.start;
@@ -340,25 +342,7 @@
     }
     st.raf = requestAnimationFrame(frame);
   }
-  function canUseWaapi(stops) {
-    var okProps = { opacity: 1, x: 0, y: 0, rotate: 0 };
-    return stops.every(function (s) { return Object.keys(s.props).every(function (p) { return p in okProps; }); });
-  }
-  function tryWaapi(st, stops, dur, easeFn, fps) {
-    try {
-      var kfs = stops.map(function (s) {
-        var o = { offset: s.off };
-        Object.keys(s.props).forEach(function (p) {
-          if (p === 'opacity') o.opacity = s.props[p];
-          else if (p === 'x') o.translate = (o.translate || '') + ' ' + s.props[p] + 'px';
-        });
-        return o;
-      });
-      // fire-and-forget progressive enhancement; rAF loop remains source of truth for SVG attrs
-      if (st.el.animate) st.waapi = st.el.animate(kfs, { duration: dur, easing: 'linear', fill: 'both' });
-    } catch (e) {}
-  }
-  function stopRaf(st) { if (st.raf) cancelAnimationFrame(st.raf); st.raf = null; if (st.waapi) { try { st.waapi.cancel(); } catch (e) {} st.waapi = null; } }
+  function stopRaf(st) { if (st.raf) cancelAnimationFrame(st.raf); st.raf = null; }
 
   // ---- public API ----
   ATML.play = function (id) {

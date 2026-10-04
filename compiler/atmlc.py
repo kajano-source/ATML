@@ -359,9 +359,20 @@ class Compiler:
         if not geoms and not texts:
             geoms.append(self.default_shape(shape, fill, stroke, sw, fw, fh))
         if texts and shape == "text":
+            tstyle = ""
+            for tk in ("font-size", "font-weight", "font-family",
+                       "letter-spacing"):
+                if tk in a:
+                    v = str(a[tk])
+                    if tk in ("font-size", "letter-spacing") and re.match(
+                            r"^-?[\d.]+$", v.strip()):
+                        v = v.strip() + "px"
+                    tstyle += "%s:%s;" % (tk, esc(v))
             geoms.append('<text x="50%%" y="50%%" dominant-baseline="middle" '
-                         'text-anchor="middle" fill="%s">%s</text>'
-                         % (esc(fill), esc(" ".join(texts))))
+                         'text-anchor="middle" fill="%s"%s>%s</text>'
+                         % (esc(fill),
+                            (' style="%s"' % tstyle) if tstyle else "",
+                            esc(" ".join(texts))))
         elif texts:
             geoms.append(esc(" ".join(texts)))
         if shape in ("image", "sprite") and ("src" in a or "href" in a):

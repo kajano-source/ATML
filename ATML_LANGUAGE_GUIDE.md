@@ -2161,6 +2161,11 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.3.2 — 2026-10-04
+
+- Engine: dropped WAAPI fast-path (phantom actor offsets); text actors keep
+  font styling. Battle-tested by the 16 s `stickfight` demo (6/6 frame checks).
+
 ## 1.3.1 — 2026-10-04
 
 - Fix: extension compiler lookup covers user installs without `PATH`

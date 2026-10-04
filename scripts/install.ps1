@@ -1,8 +1,8 @@
-# ATML 1.3.1 installer for Windows (PowerShell).
+# ATML 1.3.2 installer for Windows (PowerShell).
 # Usage: powershell -ExecutionPolicy Bypass -File scripts\install.ps1 [-Yes]
 param([switch]$Yes)
 $ErrorActionPreference = "Stop"
-$AtmlVersion = "1.3.1"
+$AtmlVersion = "1.3.2"
 $Base = Join-Path $env:LOCALAPPDATA "ATML"
 $BinDir = Join-Path $Base "bin"
 $Root = Split-Path (Split-Path $MyInvocation.MyCommand.Path -Parent) -Parent

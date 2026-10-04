@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ATML 1.3.1 GUI installer — Python standard library only (tkinter + ttk).
+"""ATML 1.3.2 GUI installer — Python standard library only (tkinter + ttk).
 
 Run:
     python3 installer/gui_installer.py
@@ -28,7 +28,7 @@ except ImportError:  # tkinter missing (e.g. minimal Arch install)
     tk = None  # type: ignore
     ttk = None  # type: ignore
 
-ATML_VERSION = "1.3.1"
+ATML_VERSION = "1.3.2"
 APP_TITLE = f"ATML {ATML_VERSION} Setup"
 
 # ---------------------------------------------------------------------------

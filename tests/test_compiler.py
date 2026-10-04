@@ -203,6 +203,25 @@ class TestCompiler(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    def test_text_actor_font_passthrough(self):
+        src = ('<atml><stage id="s"><scene id="c">'
+               '<actor id="t1" x="0" y="0" w="400" h="120" shape="text" '
+               'fill="#fff" font-size="150" font-weight="900" '
+               'font-family="Arial">K.O.</actor>'
+               "</scene></stage></atml>")
+        out = compile_atml(src, filename="t.atml")
+        self.assertIn("font-size:150px", out)
+        self.assertIn("font-weight:900", out)
+        self.assertIn(">K.O.<", out)
+
+    def test_runtime_has_no_waapi_translate_path(self):
+        here = os.path.dirname(os.path.abspath(__file__))
+        rt = os.path.join(here, "..", "runtime", "atml.js")
+        with open(rt, encoding="utf-8") as f:
+            body = f.read()
+        self.assertNotIn("canUseWaapi", body)
+        self.assertNotIn("el.animate(", body)
+
 
 if __name__ == "__main__":
     unittest.main()

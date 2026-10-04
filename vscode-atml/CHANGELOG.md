@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2 — 2026-10-04
+
+- Fix: removed the WAAPI fast-path — its malformed `translate` values stacked
+  with rAF transforms and displaced actors by hundreds of px.
+- Fix: `shape="text"` actors keep `font-size`/`font-weight`/`font-family`.
+
 ## 1.3.1 — 2026-10-04
 
 - Fix: the extension now finds the user-install compiler (`~/.local/bin/atml`)
