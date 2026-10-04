@@ -33,8 +33,8 @@ npx tsc --noEmit -p ./
 ```sh
 cd vscode-atml
 npm install && npm run compile
-vsce package        # produces atml-1.3.0.vsix
-code --install-extension atml-1.3.0.vsix
+vsce package        # produces atml-1.3.1.vsix
+code --install-extension atml-1.3.1.vsix
 ```
 
 Manual install alternative: in VS Code, **Extensions view → `...` menu →

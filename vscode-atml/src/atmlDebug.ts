@@ -63,10 +63,37 @@ export class AtmlDebugSession extends DebugSession {
       return;
     }
     const compiler = resolveCompilerPath();
-    const runArgs = compiler.endsWith('.py')
+    const isScript = compiler.endsWith('.py');
+    if (!isScript) {
+      const fs = await import('node:fs');
+      if (compiler === 'atml') {
+        const { execFileSync } = await import('node:child_process');
+        try {
+          execFileSync(compiler, ['--help'], { stdio: 'ignore' });
+        } catch {
+          this.sendEvent(new OutputEvent(
+            'ATML: compiler not found. Install it (python3 installer/cli_install.py --yes) ' +
+            'or set the "atml.compilerPath" setting.\n', 'stderr'));
+          void vscode.window.showErrorMessage(
+            'ATML: compiler not found on PATH. Run the installer or set "atml.compilerPath".');
+          this.sendEvent(new TerminatedEvent());
+          this.sendResponse(response);
+          return;
+        }
+      } else if (!fs.existsSync(compiler)) {
+        this.sendEvent(new OutputEvent(
+          `ATML: compiler not found at ${compiler}.\n`, 'stderr'));
+        void vscode.window.showErrorMessage(
+          `ATML: compiler not found at ${compiler}. Set "atml.compilerPath".`);
+        this.sendEvent(new TerminatedEvent());
+        this.sendResponse(response);
+        return;
+      }
+    }
+    const runArgs = isScript
       ? [compiler, 'run', file]
       : ['run', file];
-    const cmd = compiler.endsWith('.py') ? 'python3' : compiler;
+    const cmd = isScript ? 'python3' : compiler;
     if (typeof args.fps === 'number' && args.fps > 0) {
       runArgs.push('--fps', String(args.fps));
     }
@@ -79,6 +106,10 @@ export class AtmlDebugSession extends DebugSession {
       (line) => this.sendEvent(new OutputEvent(line)));
     if (code !== 0) {
       this.sendEvent(new OutputEvent(`ATML run failed (exit ${code}).\n`, 'stderr'));
+      void vscode.window.showErrorMessage(
+        `ATML run failed (exit ${code}) — see Debug Console for details.`);
+    } else {
+      void vscode.window.showInformationMessage('ATML: opened in your browser.');
     }
     this.sendEvent(new TerminatedEvent());
     this.sendResponse(response);

@@ -2161,6 +2161,11 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.3.1 — 2026-10-04
+
+- Fix: extension compiler lookup covers user installs without `PATH`
+  (`~/.local/bin/atml`, `%LOCALAPPDATA%/ATML`); debug run shows notifications.
+
 ## 1.3.0 — 2026-10-04
 
 - VS Code: ATML debug provider (`type: atml`) — F5 / Run-and-Debug compiles the

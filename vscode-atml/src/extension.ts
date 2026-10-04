@@ -76,15 +76,28 @@ export function resolveCompilerPath(): string {
   if (configured && configured.trim().length > 0) {
     return configured.trim();
   }
-  const extDir = __dirname.includes('out')
-    ? path.join(__dirname, '..')
-    : path.join(__dirname, '..');
-  const bundled = [
+  const candidates: string[] = [];
+  const extDir = path.join(__dirname, '..');
+  candidates.push(
     path.join(extDir, 'compiler', 'atmlc.py'),
-    path.join(extDir, '..', 'compiler', 'atmlc.py'),
-    path.join(vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? '', 'compiler', 'atmlc.py')
-  ];
-  for (const candidate of bundled) {
+    path.join(extDir, '..', 'compiler', 'atmlc.py')
+  );
+  const wsRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+  if (wsRoot) {
+    candidates.push(path.join(wsRoot, 'compiler', 'atmlc.py'));
+  }
+  // User-level installs (GUI-launched VS Code often lacks ~/.local/bin on PATH).
+  const home = process.env.HOME ?? process.env.USERPROFILE ?? '';
+  if (home) {
+    candidates.push(path.join(home, '.local', 'bin', 'atml'));
+    candidates.push(path.join(home, '.local', 'share', 'atml', 'compiler', 'atmlc.py'));
+  }
+  const localAppData = process.env.LOCALAPPDATA ?? '';
+  if (localAppData) {
+    candidates.push(path.join(localAppData, 'ATML', 'atml.cmd'));
+    candidates.push(path.join(localAppData, 'ATML', 'compiler', 'atmlc.py'));
+  }
+  for (const candidate of candidates) {
     if (candidate && fs.existsSync(candidate)) {
       return candidate;
     }

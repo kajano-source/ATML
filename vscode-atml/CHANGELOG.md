@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.1 — 2026-10-04
+
+- Fix: the extension now finds the user-install compiler (`~/.local/bin/atml`)
+  even when GUI-launched VS Code has no `~/.local/bin` on `PATH` — previously
+  F5 sessions died instantly and silently.
+- Debug runs now show a success/error notification instead of ending silently.
+
 ## 1.3.0 — 2026-10-04
 
 - New ATML debug target: F5 / Run and Debug now runs the `.atml` file in your

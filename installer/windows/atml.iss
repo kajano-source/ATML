@@ -1,7 +1,7 @@
-; ATML 1.3.0 — Inno Setup script (Windows).
+; ATML 1.3.1 — Inno Setup script (Windows).
 ; Build with Inno Setup 6: iscc installer\windows\atml.iss
 #define MyAppName "ATML"
-#define MyAppVersion "1.3.0"
+#define MyAppVersion "1.3.1"
 #define MyAppPublisher "ATML contributors"
 
 [Setup]
@@ -11,7 +11,7 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={localappdata}\ATML
 DisableProgramGroupPage=yes
-OutputBaseFilename=atml-1.3.0-setup
+OutputBaseFilename=atml-1.3.1-setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
