@@ -39,5 +39,6 @@ install -Dm644 %{_sourcedir}/installer/arch/atml.desktop %{buildroot}%{_datadir}
 
 %changelog
 * Sat Oct 04 2026 ATML contributors - 1.1.2-1
-- 1.1.2: `build -o` creates missing output directories.
+- 1.1.2: installer shims exec compiler/atmlc.py; vsix packaging fixes.
+- 1.1.1: `build -o` creates missing output directories.
 - 1.1.0: new `atml publish` site publisher (multi-page, assets, sitemap).
