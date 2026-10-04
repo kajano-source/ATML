@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 — 2026-10-04
+
+- New ATML debug target: F5 / Run and Debug now runs the `.atml` file in your
+  browser (`type: atml` launch config, `atmlDebug.ts` inline adapter driving
+  `atml run`). No more "no extension for debugging ATML" popup.
+
 ## 1.2.0 — 2026-10-04
 
 - New command `atml.run`: builds `dist/` output and opens it with the OS default

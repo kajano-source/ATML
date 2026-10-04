@@ -14,6 +14,7 @@ Language support for **ATML (Animation Text Markup Language)** `.atml` files.
   - **ATML: Preview Animation** (`atml.preview` — Simple Browser, or embedded webview fallback)
   - **ATML: Publish Site to dist/** (`atml.publish`)
   - **ATML: Run in Browser** (`atml.run` — builds to `dist/` and opens your default browser)
+  - **Run and Debug (F5)**: the ATML debug target compiles the open file and opens it in your browser (creates a `type: atml` launch config)
 - Hover docs for ATML tags / attributes / easings.
 - Completions for tags, attributes, and `ease` / `shape` values.
 - Pass-through formatter (trims trailing whitespace; preserves semantics).
@@ -27,7 +28,7 @@ Language support for **ATML (Animation Text Markup Language)** `.atml` files.
 ### From `.vsix`
 
 ```sh
-code --install-extension atml-1.2.0.vsix
+code --install-extension atml-1.3.0.vsix
 ```
 
 ### From source

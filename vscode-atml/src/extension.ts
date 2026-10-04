@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { spawn } from 'child_process';
+import { registerAtmlDebugger } from './atmlDebug';
 
 let outputChannel: vscode.OutputChannel;
 let diagnosticCollection: vscode.DiagnosticCollection;
@@ -70,7 +71,7 @@ const ATTR_DOCS: Record<string, string> = {
   loop: 'Repeat animation (`loop="true"` or count).'
 };
 
-function resolveCompilerPath(): string {
+export function resolveCompilerPath(): string {
   const configured = vscode.workspace.getConfiguration('atml').get<string>('compilerPath', '');
   if (configured && configured.trim().length > 0) {
     return configured.trim();
@@ -284,6 +285,7 @@ export function activate(context: vscode.ExtensionContext): void {
   outputChannel = vscode.window.createOutputChannel('ATML');
   diagnosticCollection = vscode.languages.createDiagnosticCollection('atml');
   context.subscriptions.push(outputChannel, diagnosticCollection);
+  registerAtmlDebugger(context);
 
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   context.subscriptions.push(statusBarItem);

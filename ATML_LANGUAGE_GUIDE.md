@@ -2161,6 +2161,11 @@ while walking → legs are parts (relative) not actors (absolute) — keep them 
 ---
 # AppF — Changelog
 
+## 1.3.0 — 2026-10-04
+
+- VS Code: ATML debug provider (`type: atml`) — F5 / Run-and-Debug compiles the
+  file and opens it in the browser via `atml run`; `launch.json` snippet included.
+
 ## 1.2.0 — 2026-10-04
 
 - New `run` subcommand: compile + stage + open in the default browser

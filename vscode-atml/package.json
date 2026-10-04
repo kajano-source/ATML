@@ -2,7 +2,7 @@
   "name": "atml",
   "displayName": "ATML",
   "description": "Language support for ATML (Animation Text Markup Language) — syntax highlighting, snippets, build, preview, hover docs and completions.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "atml-lang",
   "license": "MIT",
   "repository": {
@@ -17,7 +17,8 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "onLanguage:atml"
+    "onLanguage:atml",
+    "onDebug"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -79,6 +80,59 @@
         "when": "editorLangId == atml"
       }
     ],
+    "debuggers": [
+      {
+        "type": "atml",
+        "label": "ATML",
+        "languages": [
+          "atml"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "file"
+            ],
+            "properties": {
+              "file": {
+                "type": "string",
+                "description": "The .atml file to run (default: the open file).",
+                "default": "${file}"
+              },
+              "fps": {
+                "type": "number",
+                "description": "Override frames-per-second for this run.",
+                "default": 60
+              },
+              "noBrowser": {
+                "type": "boolean",
+                "description": "Compile + stage only, do not launch a browser.",
+                "default": false
+              }
+            }
+          }
+        },
+        "configurationSnippets": [
+          {
+            "label": "ATML: Run file in browser",
+            "description": "Compile the .atml file and open it in your default browser.",
+            "body": {
+              "type": "atml",
+              "request": "launch",
+              "name": "Run ATML file",
+              "file": "^\"\\${file}\""
+            }
+          }
+        ],
+        "initialConfigurations": [
+          {
+            "type": "atml",
+            "request": "launch",
+            "name": "Run ATML file",
+            "file": "${file}"
+          }
+        ]
+      }
+    ],
     "configuration": {
       "title": "ATML",
       "properties": {
@@ -108,8 +162,12 @@
     "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
     "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@vscode/debugadapter": "^1.68.0",
+    "@vscode/debugprotocol": "^1.68.0"
   }
 }
